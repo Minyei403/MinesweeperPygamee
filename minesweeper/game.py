@@ -44,7 +44,7 @@ class Timer: #NM: Starts event on timer.
         self.on_time_event = on_time_event
         self.start_time = None
         self.interval = None
-        self.running = False
+        self.running = False #NM: This makes sure the game does not start again unless the timer is also started again. 
 
     def start(self, interval): #NM: Start timer now and trigger event after interval
         self.running = True
@@ -55,10 +55,10 @@ class Timer: #NM: Starts event on timer.
         if (self.running and #NM: Checks if the timer is currently on but if the timer is not running it skips the rest of the code.
                 pygame.time.get_ticks() - self.start_time >= self.interval):#NM This part of the code checks to see how much time has passed since the start of teh game.
             self.running = False
-            self.on_time_event()
+            self.on_time_event()#NM: 
 
 
-def create_count_tiles(tile_size, font_name):
+def create_count_tiles(tile_size, font_name): #NM: This function makes tiles for the amount bombs in the game. 
     """Create tiles for mine counts.
 
     Additionally an empty tile without a digit is returned for 0
@@ -86,18 +86,18 @@ def create_count_tiles(tile_size, font_name):
         'Light Sea Green',
         'Black',
         'Dim Gray'
-    ]
+    ]#NM: The colours listed above are the games custom colour palette. 
 
-    font_size = int(tile_size * 0.9)
+    font_size = int(tile_size * 0.9)#NM: This adjusts the font size to fit the tile dimensions.
     font = load_font(font_name, font_size)
 
-    empty_tile = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)
-    center = empty_tile.get_rect().center
+    empty_tile = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)#NM This brings the graphics for the tiles. 
+    center = empty_tile.get_rect().center#NM: Places the font in the centre and adjusts it. 
 
-    tiles = [empty_tile.copy()]
+    tiles = [empty_tile.copy()]#NM Is a blank tile for the background of Mindsweeper game.
 
-    for count in range(1, 9):
-        glyph = font.render(str(count), True, pygame.Color(colors[count]))
+    for count in range(1, 9):#NM Each number corresponds to a tile that displays the number.
+        glyph = font.render(str(count), True, pygame.Color(colors[count]))#NM converts the number as string so it can be shown on the tile. It also sets teh color od the text and allows for a smoother look as the text is displayed.
         width = glyph.get_rect().width
 
         glyph_center = (center[0] + int(0.15 * width), center[1])

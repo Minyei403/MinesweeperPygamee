@@ -8,10 +8,10 @@ LEFT_BUTTON = 1
 RIGHT_BUTTON = 3
 
 
-def cross_image(image, color, line_width):
+def cross_image(image, color, line_width): #MK: 
     """Draw a cross over the tile."""
-    image = image.copy()
-    w, h = image.get_size()
+    image = image.copy() #MK: .copy method returns the copy of image. 
+    w, h = image.get_size() #MK: .get_size() method returns the width and height of the image. 
     pygame.draw.line(image, color, (0, 0), (w, h), line_width)
     pygame.draw.line(image, color, (w, 0), (0, h), line_width)
     return image

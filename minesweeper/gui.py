@@ -1,11 +1,10 @@
 import pygame
 
 
-LEFT_CLICK = 1 #BL: 
+LEFT_CLICK = 1 #BL: Assigns the left click of the mouse as a click to 1
 
 
 def draw_frame(width, height, frame_color): #BL: Creates a rectangular frame on  a surface
-    """Draw a rectangular frame on a transparent surface."""
     frame = pygame.Surface((width, height), pygame.SRCALPHA) #BL: Creates a surface
     pygame.draw.line(frame, frame_color, (0, 0), (width, 0)) #BL: Creates a horisontal line with 'width' as the length of the line
     pygame.draw.line(frame, frame_color, (0, 0), (0, height)) #BL: Creates a vertical line with 'height' as the length of the line
@@ -13,56 +12,28 @@ def draw_frame(width, height, frame_color): #BL: Creates a rectangular frame on 
     pygame.draw.line(frame, frame_color, (0, height - 1), (width, height - 1)) #BL: Creates lines from the corners
     return frame
 
-
 def draw_crossed_square_with_frame(side, color): #BL: Creates a square frame with a cross
-    """Draw a square frame with a cross on it."""
-    frame = draw_frame(side, side, color) #BL:
-    shift = 0.3 * side #BL:
+    frame = draw_frame(side, side, color) #BL: Creates a colored frame
+    shift = 0.3 * side 
     pygame.draw.line(frame, color,
-                     (shift, shift), (side - shift, side - shift))
+                     (shift, shift), (side - shift, side - shift)) #BL: Creates an inclined line
     pygame.draw.line(frame, color,
-                     (side - shift, shift), (shift, side - shift))
+                     (side - shift, shift), (shift, side - shift)) #BL: Creates an inclined line
     return frame
 
-
-class GUIElement:
-    """Base class for all GUI elements.
-
-    It assumes that a game element must have a surface to display, and
-    `rect` with the size equal to the size of surface.
-
-    You should modify `rect` attribute in order to place the surface.
-
-    Parameters
-    ----------
-    surface : pygame.Surface
-        Element's surface.
-    """
-    def __init__(self, surface):
+class GUIElement: #BL: Creates a class for all GUI elements assuming there is a frame to display it on. 
+#It's using rect to manipulate the rectangular areas (the frame in this case) 
+#Uses parameters for a surface: pygame.Surface and Element's surface.
+    def __init__(self, surface): #BL: Innit assigns functions to the function properties
+    #BL: Self represents instance of the class and acceses the methods in attribute in python 
         self.surface = surface
         self.rect = self.surface.get_rect()
+    def draw(self, other_surface): #BL: Draws the element in the other surface
+    #BL: Self-rect is used for positioning 
+        other_surface.blit(self.surface, self.rect) #BL: Draws a source Surface on  a surface
 
-    def draw(self, other_surface):
-        """Draw the element on the other surface.
-
-        ``self.rect`` is used for positioning.
-        """
-        other_surface.blit(self.surface, self.rect)
-
-
-class Label(GUIElement):
-    """Label GUI element.
-
-    Parameters
-    ----------
-    font : pygame.Font
-        Font to use.
-    font_color : compatible with pygame.Color
-        Font color.
-    text : string
-        Label text.
-    """
-    def __init__(self, font, font_color, text):
+class Label(GUIElement): #BL: Creates a class for text formatting
+    def __init__(self, font, font_color, text): #BL: 
         self.font = font
         self.font_color = font_color
         super(Label, self).__init__(font.render(text, True, font_color))

@@ -1,6 +1,6 @@
-#Nina Mathew
-#Minyei Kim
-#Barbara Litvinova
+#Nina Mathew - NM 
+#Minyei Kim - MK 
+#Barbara Litvinova - BL
 import os
 import json
 import pygame
@@ -40,6 +40,11 @@ def load_font(name, size):
 
 
 class Timer: #NM: Starts event on timer.
+#NM: self in python is an instance of the class.
+#NM: A class is an obkect builder, contructor, or blueprint for making objects.
+#NM: Self allows us to access the attributes and methods of class.
+#NM: Attributes are the variables to an object that have information about it's characteristics. 
+#NM: When new classes are created it makes a new type of object which  allows new instances to occur. 
     def __init__(self, on_time_event): #NM: Starts timer with a callback function. A callback function is when the function is passed as an argument and then after the first function is completed the function is called back at a specific time. 
         self.on_time_event = on_time_event
         self.start_time = None
@@ -135,7 +140,7 @@ class Game:
         if difficulty not in ['EASY', 'NORMAL', 'HARD', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
-        if "leaderboard" in state:
+        if "leaderboard" in state: #NM It checks if leadership is in state if not it only displays the basic levels(Easy, Normal, Hard)
             leaderboard_data = state['leaderboard']
         else:
             leaderboard_data = {'EASY': [], 'NORMAL': [], 'HARD': []}

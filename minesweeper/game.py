@@ -1,67 +1,59 @@
+#Nina Mathew
+#Minyei Kim
+#Barbara Litvinova
 import os
 import json
 import pygame
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
-from . leaderboard import Leaderboard
+from . leaderboard import Leaderboard #
+#NM: above are imported files and python code for graphics and the visual part of the Mindsweeper game.  
+
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), 'assets')#NM: os.path is used to see and modify files and for accessing the filesystem.
+#NM: The directory is to allow access to all of the fonts, graphics, and images.
 
 
-ASSETS_DIR = os.path.join(os.path.dirname(__file__), 'assets')
-
-
-def load_image(name, size=None):
-    """Load image and optionally resize it."""
-    path = os.path.join(ASSETS_DIR, name)
-    try:
-        image = pygame.image.load(path)
-    except pygame.error as error:
+def load_image(name, size=None):#NM: This function loads and image and allows for the resize of it. 
+    path = os.path.join(ASSETS_DIR, name) #NM: It brings the files from the directory, like images.
+    try: #NM: It tries to execute the code here, but if anything goes wrong or an exception occurs it goes to the except block.
+        image = pygame.image.load(path) #NM: If the try block is true it allows for the image to be printed. 
+    except pygame.error as error:#NM: Since there is an error it allows for a fail safe and notifies the user of the error.
         print('Cannot load image: ', path)
         raise SystemError(error)
 
     if size is not None:
-        if isinstance(size, int):
+        if isinstance(size, int):#NM: isinstance function returns True if the object is an int, otherwise False.
             size = (size, size)
-        image = pygame.transform.scale(image, size)
+        image = pygame.transform.scale(image, size)#NM: It scales the image to the correct size and shape.
 
     return image
 
 
 def load_font(name, size):
-    path = os.path.join(ASSETS_DIR, name)
+    path = os.path.join(ASSETS_DIR, name) #NM: It brings the fonts from the directory files.
     try:
         font = pygame.font.Font(path, size)
     except pygame.error as error:
         print('Cannot load font: ', path)
-        raise SystemError(error)
+        raise SystemError(error) #NM: The raise statement forces an error to happen to either print text to the user, stop the program, and make special exceptions.
     return font
 
 
-class Timer:
-    """Execute event on timer.
-
-    Parameters
-    ----------
-    on_time_event L callable
-        Call this event on timer.
-    """
-    def __init__(self, on_time_event):
+class Timer: #NM: Starts event on timer.
+    def __init__(self, on_time_event): #NM: Starts timer with a callback function. A callback function is when the function is passed as an argument and then after the first function is completed the function is called back at a specific time. 
         self.on_time_event = on_time_event
         self.start_time = None
         self.interval = None
         self.running = False
 
-    def start(self, interval):
-        """Start timer now and trigger event after `interval`."""
+    def start(self, interval): #NM: Start timer now and trigger event after interval
         self.running = True
         self.interval = interval
-        self.start_time = pygame.time.get_ticks()
+        self.start_time = pygame.time.get_ticks() #NM: This Pygame function is running in milliseconds and time is printed for every millisecond. 
 
-    def check(self):
-        """Check whether event occurred.
-
-        Must be called continuously in the main loop."""
-        if (self.running and
-                pygame.time.get_ticks() - self.start_time >= self.interval):
+    def check(self): #NM: This function checks if the timer is finished and if it is done it triggers the event below to occur. 
+        if (self.running and #NM: Checks if the timer is currently on but if the timer is not running it skips the rest of the code.
+                pygame.time.get_ticks() - self.start_time >= self.interval):#NM This part of the code checks to see how much time has passed since the start of teh game.
             self.running = False
             self.on_time_event()
 

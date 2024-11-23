@@ -1,23 +1,23 @@
 import pygame
 
 
-LEFT_CLICK = 1
+LEFT_CLICK = 1 #BL: 
 
 
-def draw_frame(width, height, frame_color):
+def draw_frame(width, height, frame_color): #BL: Creates a rectangular frame on  a surface
     """Draw a rectangular frame on a transparent surface."""
-    frame = pygame.Surface((width, height), pygame.SRCALPHA)
-    pygame.draw.line(frame, frame_color, (0, 0), (width, 0))
-    pygame.draw.line(frame, frame_color, (0, 0), (0, height))
-    pygame.draw.line(frame, frame_color, (width - 1, 0), (width - 1, height))
-    pygame.draw.line(frame, frame_color, (0, height - 1), (width, height - 1))
+    frame = pygame.Surface((width, height), pygame.SRCALPHA) #BL: Creates a surface
+    pygame.draw.line(frame, frame_color, (0, 0), (width, 0)) #BL: Creates a horisontal line with 'width' as the length of the line
+    pygame.draw.line(frame, frame_color, (0, 0), (0, height)) #BL: Creates a vertical line with 'height' as the length of the line
+    pygame.draw.line(frame, frame_color, (width - 1, 0), (width - 1, height)) #BL: Creates lines from the corners 
+    pygame.draw.line(frame, frame_color, (0, height - 1), (width, height - 1)) #BL: Creates lines from the corners
     return frame
 
 
-def draw_crossed_square_with_frame(side, color):
+def draw_crossed_square_with_frame(side, color): #BL: Creates a square frame with a cross
     """Draw a square frame with a cross on it."""
-    frame = draw_frame(side, side, color)
-    shift = 0.3 * side
+    frame = draw_frame(side, side, color) #BL:
+    shift = 0.3 * side #BL:
     pygame.draw.line(frame, color,
                      (shift, shift), (side - shift, side - shift))
     pygame.draw.line(frame, color,

@@ -59,23 +59,6 @@ class Timer: #NM: Starts event on timer.
 
 
 def create_count_tiles(tile_size, font_name): #NM: This function makes tiles for the amount bombs in the game. 
-    """Create tiles for mine counts.
-
-    Additionally an empty tile without a digit is returned for 0
-
-    Parameters
-    ----------
-    tile_size
-        Size of tiles.
-    font_name : string
-        Font name to be found in resources directory. The size will be 0.9
-        of `tile_size`.
-
-    Returns
-    -------
-    tiles : list of pygame.Surface
-        List of tiles containing 9 elements.
-    """
     colors = [
         None,
         'Blue',
@@ -94,63 +77,62 @@ def create_count_tiles(tile_size, font_name): #NM: This function makes tiles for
     empty_tile = pygame.Surface((tile_size, tile_size), pygame.SRCALPHA)#NM This brings the graphics for the tiles. 
     center = empty_tile.get_rect().center#NM: Places the font in the centre and adjusts it. 
 
-    tiles = [empty_tile.copy()]#NM Is a blank tile for the background of Mindsweeper game.
+    tiles = [empty_tile.copy()]#NM: Is a blank tile for the background of Mindsweeper game.
 
-    for count in range(1, 9):#NM Each number corresponds to a tile that displays the number.
-        glyph = font.render(str(count), True, pygame.Color(colors[count]))#NM converts the number as string so it can be shown on the tile. It also sets teh color od the text and allows for a smoother look as the text is displayed.
-        width = glyph.get_rect().width
+    for count in range(1, 9):#NM: Each number corresponds to a tile that displays the number.
+        glyph = font.render(str(count), True, pygame.Color(colors[count]))#NM: converts the number as string so it can be shown on the tile. It also sets the color od the text and allows for a smoother look as the text is displayed.
+        width = glyph.get_rect().width#NM: The get_rect function returns a new rectangle covering the entire surface. 
 
-        glyph_center = (center[0] + int(0.15 * width), center[1])
+        glyph_center = (center[0] + int(0.15 * width), center[1])#NM: This centers the text horizontally and vertically. 
         rect = glyph.get_rect(center=glyph_center)
-        tile = empty_tile.copy()
-        tile.blit(glyph, rect.topleft)
-        tiles.append(tile)
+        tile = empty_tile.copy()#NM: This line allows for a blank tile on the game. 
+        tile.blit(glyph, rect.topleft)#NM The .blit function takes the source onto this code or surface.
+        tiles.append(tile)#NM: The .append function adds something extra to the end of the list. 
 
     return tiles
 
 
-def is_key_suitable_for_name(key_name):
-    """Check if a key is suitable for name input."""
-    return len(key_name) == 1 and key_name.isalnum() or key_name in ['-', '_']
+def is_key_suitable_for_name(key_name):#NM: This checks if a key is valid for entering names. 
+    return len(key_name) == 1 and key_name.isalnum() or key_name in ['-', '_']#NM The isalnum() method checks if all the characters are alphanumeric which means Letters are first and then numbers.
 
 
-def is_digit(key_name):
-    """Check if a key is a digit."""
-    return len(key_name) == 1 and key_name.isnumeric()
+def is_digit(key_name):#NM: This checks if the key is a numeric digit.
+    return len(key_name) == 1 and key_name.isnumeric()#NM:It returns True if the key is one digit. 
 
 
 class Game:
     """Main game class."""
-    TILE_SIZE = 20
+    TILE_SIZE = 20 #NM: This represents the size of every tile in the game. 
     GUI_WIDTH = 91
     HUD_HEIGHT = 30
     MARGIN = 20
-    BG_COLOR = pygame.Color('Light Slate Gray')
-    FIELD_BG_COLOR = pygame.Color('#d7dcdc')
+    BG_COLOR = pygame.Color('Light Slate Gray')#NM: This is the background colour.
+    FIELD_BG_COLOR = pygame.Color('#d7dcdc')#NM: Field background colour
     FIELD_LINES_COLOR = pygame.Color('#738383')
-    GUI_FONT_COLOR = pygame.Color('Light Yellow')
+    GUI_FONT_COLOR = pygame.Color('Light Yellow')#NM: The colour of the font. 
     GUI_FONT_SIZE = 13
     DIGITS = {chr(c) for c in range(ord('0'), ord('9') + 1)}
     MAX_BOARD_DIMENSION = 50
     MIN_BOARD_DIMENSION_DISPLAY = 10
     MAX_NAME_LENGTH = 8
     DELAY_BEFORE_NAME_INPUT_MS = 1000
+    #NM: The above code gives restrictions to teh graphics and gives it a limit to the width, height, and other dimensions. 
 
-    def __init__(self, state_file_path):
+    def __init__(self, state_file_path):#NM: Te goal of this function is to try to load the game from the file state_file. 
         try:
-            with open(state_file_path) as state_file:
-                state = json.load(state_file)
-        except (IOError, json.JSONDecodeError):
+            with open(state_file_path) as state_file:#NM: The with open() opens a file so the code below can acces and work on the file. In this case the file state_file.
+                state = json.load(state_file)#NM: The json.load() is used to store and transer data like state_file.
+        except (IOError, json.JSONDecodeError):#NM: In case of an error the game goes to an empty state. 
             state = {}
 
-        display_info = pygame.display.Info()
+        display_info = pygame.display.Info()#NM: The fucntion below shows the information for the dimensions of the game.
         self.max_cols = (int(0.95 * display_info.current_w) - self.GUI_WIDTH
-                         - 3 * self.MARGIN) // self.TILE_SIZE
-        self.max_rows = (int(0.95 * display_info.current_h) - self.HUD_HEIGHT
+                         - 3 * self.MARGIN) // self.TILE_SIZE #NM: This line codes for the maximum numbers of coloumns allowed in the game. 
+        self.max_rows = (int(0.95 * display_info.current_h) - self.HUD_HEIGHT#NM This line shows the maximum number of rows alllowed in the game. 
                          - 3 * self.MARGIN) // self.TILE_SIZE
 
-        difficulty = state.get('difficulty', 'EASY')
-        if difficulty not in ['EASY', 'NORMAL', 'HARD', 'CUSTOM']:
+        difficulty = state.get('difficulty', 'EASY')#NM: The .get() function tries to get the difficulty from a different file called state.
+        if difficulty not in ['EASY', 'NORMAL', 'HARD', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
         if "leaderboard" in state:

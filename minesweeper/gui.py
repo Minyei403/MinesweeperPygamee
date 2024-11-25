@@ -26,21 +26,20 @@ class GUIElement: #BL: Creates a class for all GUI elements assuming there is a 
 #Uses parameters for a surface: pygame.Surface and Element's surface.
     def __init__(self, surface): #BL: Innit assigns functions to the function properties
     #BL: Self represents instance of the class and acceses the methods in attribute in python 
-        self.surface = surface
-        self.rect = self.surface.get_rect()
+        self.surface = surface #BL: Accessses the surface variable
+        self.rect = self.surface.get_rect() #BL:
     def draw(self, other_surface): #BL: Draws the element in the other surface
     #BL: Self-rect is used for positioning 
         other_surface.blit(self.surface, self.rect) #BL: Draws a source Surface on  a surface
 
 class Label(GUIElement): #BL: Creates a class for text formatting
-    def __init__(self, font, font_color, text): #BL:Sets the parameters of the class such as font, color of the text and the actual displayed text string.
-        self.font = font
-        self.font_color = font_color
-        super(Label, self).__init__(font.render(text, True, font_color))
+    def __init__(self, font, font_color, text): #BL: Sets the parameters of the class such as font, color of the text and the actual displayed text string.
+        self.font = font #BL: Accesses font variable
+        self.font_color = font_color #BL: Accesses font color variable
+        super(Label, self).__init__(font.render(text, True, font_color)) #BL: Super function gives access to the parent and a sibling class, initializes the label class. 
 
     def set_text(self, text): #BL: Sets the way how the text is centered. 
-        """Set text."""
-        old_center = self.rect.center
+        old_center = self.rect.center #BL: Sets the position of the label
         self.surface = self.font.render(text, True, self.font_color)
         self.rect = self.surface.get_rect(center=old_center)
 
@@ -57,41 +56,24 @@ class Button(GUIElement): #BL:Creates a class for a button - a text in a frame
         if frame_color is None: #BL: If there's not font color, it sets the font color to the frame color
             frame_color = font_color 
 
-        surface = draw_frame(self.text.get_width() + margin, #
-                             1.2 * self.text.get_height(),
+        surface = draw_frame(self.text.get_width() + margin, #BL: Creates another frame around the button
+                             1.2 * self.text.get_height(), #BL: Control the height and the color of the frame 
                              frame_color)
-        super(Button, self).__init__(surface)
-        rect = self.text.get_rect(center=self.rect.center)
-        self.surface.blit(self.text, rect.topleft)
-        self.on_click_callback = on_click_callback
+        super(Button, self).__init__(surface) #BL: Gives an access from the button to the surface
+        rect = self.text.get_rect(center=self.rect.center) #BL: Centers the button in the frame
+        self.surface.blit(self.text, rect.topleft) #BL: Locates the text on the top left of the button
+        self.on_click_callback = on_click_callback #BL: Calls for the an action when the button is clicked
 
-    def on_mouse_up(self, button):
-        """Handle mouse button up."""
-        if button != LEFT_CLICK or self.on_click_callback is None:
+    def on_mouse_up(self, button): #BL: Handles the mouse button up
+        if button != LEFT_CLICK or self.on_click_callback is None: #BL: When the left mouse button is clicked, function calls for an action
             return
 
-        if self.rect.collidepoint(*pygame.mouse.get_pos()):
+        if self.rect.collidepoint(*pygame.mouse.get_pos()): #BL: When  the mouse button is clicked, function detects if it happened on a buttton
             self.on_click_callback()
 
 
-class SelectionGroup(GUIElement):
-    """Selector from one of many options.
-
-    Parameters
-    ----------
-    font : pygame.Font
-        Font to display text.
-    font_color : compatible with pygame.Color
-        Font color.
-    title : string
-        Title for the group.
-    options : list of string
-        Option names.
-    on_change_callback : callable, optional
-        Callable with signature ``on_change_callback(option)`` called
-        when a new option is selected. No callback by default.
-    """
-    def __init__(self, font, font_color,
+class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
+    def __init__(self, font, font_color, #BL: 
                  title, options,
                  on_change_callback=None,
                  initial_value=None):

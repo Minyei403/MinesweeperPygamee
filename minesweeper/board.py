@@ -1,3 +1,7 @@
+#Minyei Kim - MK
+#Nina Mathew - NM
+#Barbara Litvinova - BL
+
 from collections import deque
 import random
 import numpy
@@ -8,33 +12,33 @@ LEFT_BUTTON = 1
 RIGHT_BUTTON = 3
 
 
-def cross_image(image, color, line_width): #MK: 
+def cross_image(image, color, line_width): #MK: This fuction draws a cross over the tile.
     """Draw a cross over the tile."""
     image = image.copy() #MK: .copy method returns the copy of image. 
     w, h = image.get_size() #MK: .get_size() method returns the width and height of the image. 
-    pygame.draw.line(image, color, (0, 0), (w, h), line_width)
-    pygame.draw.line(image, color, (w, 0), (0, h), line_width)
+    pygame.draw.line(image, color, (0, 0), (w, h), line_width) #MK: It draws a line on the screen: line(surface, color, start_pos, end_pos)
+    pygame.draw.line(image, color, (w, 0), (0, h), line_width) 
     return image
 
 
-def add_background_color(tile, color):
+def add_background_color(tile, color): #MK: This function draws a tile on the solid colour background. 
     """Draw a tile on the solid color background."""
-    background = pygame.Surface(tile.get_size())
-    background.fill(color)
-    background.blit(tile, (0, 0))
+    background = pygame.Surface(tile.get_size()) #MK: pygame.Surface() is a module that create a new image object. 
+    background.fill(color) #MK: This will fill the colour of the background. 
+    background.blit(tile, (0, 0)) #MK: This will draw the screen at (0,0) position. 
     return background
 
 
-class Tile(pygame.sprite.Sprite):
+class Tile(pygame.sprite.Sprite): #MK: Class is a code template for creating objects. Sprites are objects with different properties. 
     """Sprite for a board tile."""
-    def __init__(self, image, i, j, tile_size):
-        super(Tile, self).__init__()
-        self.image = image
+    def __init__(self, image, i, j, tile_size): #MK: __init__ method is to initialize the data members of a class when an object of that class is created. Self is the instance of the class and is used to access variables that belong to the class. 
+        super(Tile, self).__init__() #MK: Super() function gives access to methods and properties of the class. 
+        self.image = image #MK: The image is automatically passed as the first argument using the 'self' parameter. 
         self.rect = pygame.Rect(j * tile_size, i * tile_size,
-                                tile_size, tile_size)
+                                tile_size, tile_size) #MK: pygame.Rect is a data structure that represents a 2D area. 
 
 
-def create_field(n_rows, n_cols, tile_size, bg_color, line_color):
+def create_field(n_rows, n_cols, tile_size, bg_color, line_color): #MK: This fuction will create the field. 
     """Create a checkered field.
 
     Parameters
@@ -53,15 +57,15 @@ def create_field(n_rows, n_cols, tile_size, bg_color, line_color):
     pygame.Surface
         Image of the field.
     """
-    field = pygame.Surface((n_cols * tile_size, n_rows * tile_size))
-    field.fill(bg_color)
+    field = pygame.Surface((n_cols * tile_size, n_rows * tile_size)) #MK: This will create a new image according to the size described. 
+    field.fill(bg_color) #MK: This fills the field image with the colour. 
 
-    for i in range(n_rows):
+    for i in range(n_rows): #MK: This loop will run number of n_rows times. 
         pygame.draw.line(field, line_color,
                          (0, i * tile_size),
-                         (n_cols * tile_size, i * tile_size))
+                         (n_cols * tile_size, i * tile_size)) #MK: This will draw a line according to the assigned values as much as the number of rows. 
 
-    for j in range(n_cols):
+    for j in range(n_cols): #MK: This is the same function for the columns. 
         pygame.draw.line(field, line_color,
                          (j * tile_size, 0),
                          (j * tile_size, n_rows * tile_size))
@@ -69,7 +73,7 @@ def create_field(n_rows, n_cols, tile_size, bg_color, line_color):
     return field
 
 
-class Board:
+class Board: #MK: This is the game board. 
     """Game board.
 
     Parameters
@@ -101,13 +105,13 @@ class Board:
 
     def __init__(self, n_rows, n_cols, n_mines, bg_color, bg_lines_color,
                  tile_size, tile_image, mine_count_images, flag_image,
-                 mine_image, on_status_change_callback=None):
-        self.n_rows = n_rows
-        self.n_cols = n_cols
-        self.n_mines = n_mines
-        self.n_mines_left = n_mines
+                 mine_image, on_status_change_callback=None): #MK: Assigning the sizes of all objects. 
+        self.n_rows = n_rows #MK: number of rows
+        self.n_cols = n_cols #MK: number of columns
+        self.n_mines = n_mines #MK: number of columns, must be not greater than 'n_row'*'n_cols'
+        self.n_mines_left = n_mines 
 
-        self.is_mine = numpy.zeros((n_rows, n_cols), dtype=bool)
+        self.is_mine = numpy.zeros((n_rows, n_cols), dtype=bool) #MK: This creates a new array of number of n_rows, n_cols and the bool type. 
         self.mine_count = None
         self.tile_status = numpy.full((n_rows, n_cols), self.TILE_CLOSED,
                                       dtype=numpy.int32)
@@ -116,7 +120,7 @@ class Board:
         self.tiles_to_open = self.n_rows * self.n_cols - self.n_mines
         self._time = 0
 
-        self.tile_size = tile_size
+        self.tile_size = tile_size #MK: The length of a tile's side in pixels. 
 
         self.bg_color = bg_color
         self.bg_lines_color = bg_lines_color
@@ -125,13 +129,13 @@ class Board:
                                      bg_lines_color)
         self.tile_image = tile_image
         self.mine_count_images = mine_count_images
-        self.flag_image = flag_image
-        self.mine_image = mine_image
+        self.flag_image = flag_image #MK: image of the flag in png
+        self.mine_image = mine_image #MK: image of the mine in png
         self.mine_image_crossed = cross_image(mine_image,
                                               pygame.Color('red'),
                                               2)
         self.mine_image_red_bg = add_background_color(mine_image,
-                                                      pygame.Color('red'))
+                                                      pygame.Color('red')) #Mk: Mine image with red background. 
         self.rect = pygame.Rect(
             0, 0, self.n_cols * self.tile_size, self.n_rows * self.tile_size)
 
@@ -142,15 +146,15 @@ class Board:
         self.on_status_change_callback = on_status_change_callback
         self.game_status = "before_start"
 
-    def _init_tiles(self):
+    def _init_tiles(self): #MK: This function initialzies list of tiles with closed tiles. 
         """Initialize list of tiles with closed tiles."""
         self.tiles = []
-        for i in range(self.n_rows):
-            for j in range(self.n_cols):
-                self.tiles.append(Tile(self.tile_image, i, j, self.tile_size))
-        self.tiles_group = pygame.sprite.Group(*self.tiles)
+        for i in range(self.n_rows): #MK: This will call the items in n_rows n times.  
+            for j in range(self.n_cols): #MK: This will call the items in n_cols n times.
+                self.tiles.append(Tile(self.tile_image, i, j, self.tile_size)) #MK: add the tile image to the list 'tiles'. 
+        self.tiles_group = pygame.sprite.Group(*self.tiles) #MK: This is a container class to hold and manage multiple Sprite objects. 
 
-    def reset(self, n_rows=None, n_cols=None, n_mines=None):
+    def reset(self, n_rows=None, n_cols=None, n_mines=None): #MK: This function is a reset board. 
         """Reset board.
 
         Optional arguments will replace ones set in the class (if presented).
@@ -183,20 +187,20 @@ class Board:
         self._time = 0
         self._change_game_status("before_start")
 
-    def _change_game_status(self, new_status):
+    def _change_game_status(self, new_status): #MK: Setting the game to a new status 
         self.game_status = new_status
         if self.on_status_change_callback is not None:
             self.on_status_change_callback(self.game_status)
 
     @property
-    def time(self):
+    def time(self): #MK: This function tracks the time of the game from the start. 
         """Return time passed from the game start."""
         if self.game_status == 'running' and self.start_time is not None:
-            self._time = (pygame.time.get_ticks() - self.start_time) // 1000
+            self._time = (pygame.time.get_ticks() - self.start_time) // 1000 #MK: Dividing the time by 1000 will show the time in seconds. 
 
         return self._time
 
-    def _put_mines(self, i_click, j_click):
+    def _put_mines(self, i_click, j_click): #MK: This function will add the mines. 
         """Put mines after the first click."""
         allowed_positions = []
         n_tiles = self.n_rows * self.n_cols
@@ -284,7 +288,7 @@ class Board:
             self.tile_status[i, j] = self.TILE_CLOSED
             self.n_mines_left += 1
 
-    def _open_tile(self, i, j):
+    def _open_tile(self, i, j): #MK: This function opens tile. 
         """Open tile (left click action)."""
         status = self.tile_status[i, j]
         if status == self.TILE_CHECKED:

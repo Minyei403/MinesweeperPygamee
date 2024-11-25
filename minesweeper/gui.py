@@ -33,48 +33,31 @@ class GUIElement: #BL: Creates a class for all GUI elements assuming there is a 
         other_surface.blit(self.surface, self.rect) #BL: Draws a source Surface on  a surface
 
 class Label(GUIElement): #BL: Creates a class for text formatting
-    def __init__(self, font, font_color, text): #BL: 
+    def __init__(self, font, font_color, text): #BL:Sets the parameters of the class such as font, color of the text and the actual displayed text string.
         self.font = font
         self.font_color = font_color
         super(Label, self).__init__(font.render(text, True, font_color))
 
-    def set_text(self, text):
+    def set_text(self, text): #BL: Sets the way how the text is centered. 
         """Set text."""
         old_center = self.rect.center
         self.surface = self.font.render(text, True, self.font_color)
         self.rect = self.surface.get_rect(center=old_center)
 
-    def render(self):
-        """Return surface to display."""
+    def render(self): #BL: Returns surface to the display
         return self.surface
 
 
-class Button(GUIElement):
-    """Button GUI element.
+class Button(GUIElement): #BL:Creates a class for a button - a text in a frame
 
-    The visual is a text in a rectangular frame.
-
-    Parameters
-    ----------
-    font : pygame.Font
-        Font to use.
-    font_color : compatible with pygame.Color
-        Color to use.
-    text : string
-        Text on button.
-    on_click_callback : callable
-        Call on click, accepts no arguments. No callback by default.
-    frame_color : compatible with pygame.Color
-        Color to use for the frame. Use `font_color` by default.
-    """
-    def __init__(self, font, font_color, text, on_click_callback,
+    def __init__(self, font, font_color, text, on_click_callback, #BL: Sets specific measurements of the button + sets the measurements of the text, font
                  frame_color=None):
-        self.text = font.render(text, True, font_color)
-        margin = 1.5 * font.size("_")[0]
-        if frame_color is None:
-            frame_color = font_color
+        self.text = font.render(text, True, font_color) #BL: Renders text into a graphical object
+        margin = 1.5 * font.size("_")[0] #BL: Sets the frame margin thickness realted to the font size
+        if frame_color is None: #BL: If there's not font color, it sets the font color to the frame color
+            frame_color = font_color 
 
-        surface = draw_frame(self.text.get_width() + margin,
+        surface = draw_frame(self.text.get_width() + margin, #
                              1.2 * self.text.get_height(),
                              frame_color)
         super(Button, self).__init__(surface)

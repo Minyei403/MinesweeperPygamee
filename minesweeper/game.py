@@ -41,7 +41,7 @@ def load_font(name, size):
 
 class Timer: #NM: Starts event on timer.
 #NM: self in python is an instance of the class.
-#NM: A class is an obkect builder, contructor, or blueprint for making objects.
+#NM: A class is an object builder, contructor, or blueprint for making objects.
 #NM: Self allows us to access the attributes and methods of class.
 #NM: Attributes are the variables to an object that have information about it's characteristics. 
 #NM: When new classes are created it makes a new type of object which  allows new instances to occur. 
@@ -140,62 +140,63 @@ class Game:
         if difficulty not in ['EASY', 'NORMAL', 'HARD', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
-        if "leaderboard" in state: #NM It checks if leadership is in state if not it only displays the basic levels(Easy, Normal, Hard)
+        if "leaderboard" in state: #NM It checks if leadership is in state if it's not it only displays the basic levels(Easy, Normal, Hard)
             leaderboard_data = state['leaderboard']
         else:
             leaderboard_data = {'EASY': [], 'NORMAL': [], 'HARD': []}
 
-        self.n_rows = state.get('n_rows', 10)
-        self.n_cols = state.get('n_cols', 10)
+        self.n_rows = state.get('n_rows', 10)#NM: state.get gets the value of n_rows but if n_rows doesn't exist it defaults the value to 10 rows.  
+        self.n_cols = state.get('n_cols', 10)#NM: As stated above if n_cols or n_mines doesn't exist the code defaults to 10.
         self.n_mines = state.get('n_mines', 10)
-        self.set_difficulty(difficulty)
+        self.set_difficulty(difficulty)#NM: This line increases the number of rows, coloumns, mines based on the difficulty level. 
 
         mine_count_images = create_count_tiles(self.TILE_SIZE,
                                                "kenvector_future.ttf")
-        tile_image = load_image('tile.png', self.TILE_SIZE)
-        mine_image = load_image('mine.png', self.TILE_SIZE)
-        flag_image = load_image('flag.png', self.TILE_SIZE)
-        gui_font = load_font("Akrobat-Bold.otf", self.GUI_FONT_SIZE)
+        tile_image = load_image('tile.png', self.TILE_SIZE)#NM: tile.png is a blank unclicked tile.
+        mine_image = load_image('mine.png', self.TILE_SIZE)#NM: Mine and flag png represents the mines and flags in the game. 
+        flag_image = load_image('flag.png', self.TILE_SIZE)#NM: The load image part of the file retrieves the images and resizes it to match the tile size(TILE_SIZE). 
+        gui_font = load_font("Akrobat-Bold.otf", self.GUI_FONT_SIZE)#NM: Loads the font type into the GUI of the game. GUI is the graphical user interface.
+        #NM: The above code first tries to find the number of rows, coloumnc, and mines from the state directory but if nothing is saved in the directory then it defaults to the easiest level with 10 rows, 10 columns, and 10 mines.
 
         self.board = Board(
-            self.n_rows, self.n_cols, self.n_mines,
-            self.FIELD_BG_COLOR, self.FIELD_LINES_COLOR, self.TILE_SIZE,
-            tile_image, mine_count_images, flag_image, mine_image,
+            self.n_rows, self.n_cols, self.n_mines,#NM: These are the dimensions of the game.
+            self.FIELD_BG_COLOR, self.FIELD_LINES_COLOR, self.TILE_SIZE, #NM: This has the background colour, colour of teh gridlines, and size of each tile in the game. 
+            tile_image, mine_count_images, flag_image, mine_image, #NM: This line brings the saved images of the mines and flags. 
             on_status_change_callback=self.on_status_change)
 
         self.screen = None
-        self.screen_rect = None
-        self.board_rect = None
-        self.hud_rect = None
-        self.gui_rect = None
-        self.board_area_rect = None
-        self.init_screen()
+        self.screen_rect = None #NM: Represents the screens boundaries.
+        self.board_rect = None #NM: This represents the minesweeper board area.
+        self.hud_rect = None 
+        self.gui_rect = None 
+        self.board_area_rect = None #NM: The part of teh game that has the board.
+        self.init_screen()#NM: Arranges the attributes above and sets up the game.
 
-        self.difficulty_selector = SelectionGroup(
+        self.difficulty_selector = SelectionGroup( #NM: Allows the user to select options by adding drop-down or buttons in the game. 
             gui_font,
             self.GUI_FONT_COLOR,
             "DIFFICULTY",
             ["EASY", "NORMAL", "HARD", "CUSTOM"],
             initial_value=state.get('difficulty', 'EASY'))
 
-        self.difficulty_selector.rect.centerx = self.gui_rect.centerx
+        self.difficulty_selector.rect.centerx = self.gui_rect.centerx #NM: The .rect function is used to draw rectangles. In this case the selector is aligned horizontally to the centre of the GUI.
         self.difficulty_selector.rect.y = self.MARGIN
-        self.difficulty_selector.callback = self.on_difficulty_change
+        self.difficulty_selector.callback = self.on_difficulty_change #NM: Everytime this function runs it updates teh game dimensions to match the difficulty level. 
 
-        active_input = self.difficulty_selector.selected == "CUSTOM"
+        active_input = self.difficulty_selector.selected == "CUSTOM" #NM: Checks to see if the difficulty level is custom and if its true it changes the dimensions of the game based on the input from the user.
         self.width_input = Input(gui_font, self.GUI_FONT_COLOR,
-                                 "WIDTH", self.n_cols,
+                                 "WIDTH", self.n_cols, #NM: Makes a section for width input. 
                                  active_input=active_input,
-                                 width=self.GUI_WIDTH, max_value_length=3,
-                                 key_filter=is_digit,
-                                 on_enter_callback=self.on_cols_enter)
-        self.height_input = Input(gui_font, self.GUI_FONT_COLOR,
+                                 width=self.GUI_WIDTH, max_value_length=3,#NM: The part with max_value_length restricts the users input to 3 digits so 999 columns is the maximum amount of coloumns allowed. 
+                                 key_filter=is_digit,#NM: Prevents the user from inputing anything but numbers.
+                                 on_enter_callback=self.on_cols_enter)#NM: The game dimensions chan ges after the user confirms their customization by pressing enter. 
+        self.height_input = Input(gui_font, self.GUI_FONT_COLOR, #NM: Makes a section for height input and repeats the same code as the one for width.
                                   "HEIGHT", self.n_rows, width=self.GUI_WIDTH,
                                   active_input=active_input,
                                   max_value_length=3,
                                   key_filter=is_digit,
                                   on_enter_callback=self.on_rows_enter)
-        self.mines_input = Input(gui_font, self.GUI_FONT_COLOR,
+        self.mines_input = Input(gui_font, self.GUI_FONT_COLOR, #NM: Makes a section for mines input and repeats the same code as the one for width and height.
                                  "MINES", self.n_mines, width=self.GUI_WIDTH,
                                  active_input=active_input,
                                  max_value_length=3,

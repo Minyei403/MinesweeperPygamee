@@ -299,48 +299,48 @@ class Game:
             self.width_input.rect.bottom + 0.4 * self.height_input.rect.height)#NM: adds space thats around 40% of the height. 
         self.mines_input.rect.topleft = (
             self.gui_rect.x,
-            self.height_input.rect.bottom + 0.4 * self.width_input.rect.height)
+            self.height_input.rect.bottom + 0.4 * self.width_input.rect.height)#NM: Adds spacing to make it proportional.
 
-        hud_width = self.place_hud()
+        hud_width = self.place_hud()#NM:Calculates the width of the HUD.
 
-        self.restart_button.rect.top = self.timer.rect.top
+        self.restart_button.rect.top = self.timer.rect.top #NM: Makes the reset button horizontally aligned with the timer.
         self.restart_button.rect.centerx = 0.5 * (self.hud_rect.left
                                                   + self.hud_rect.right
-                                                  - hud_width)
+                                                  - hud_width)#NM: centres the restart buttom.
 
         self.show_leaderboard_button.rect.bottom = (self.screen_rect.height
-                                                    - self.MARGIN)
+                                                    - self.MARGIN)#NM: Makes the leaderboard button slightly above the screen margin.
         self.show_leaderboard_button.rect.centerx = (self.MARGIN
-                                                     + 0.5 * self.GUI_WIDTH)
+                                                     + 0.5 * self.GUI_WIDTH)#NM: leadership button is horizontally inside the panel.
 
-        screen_center = self.screen.get_rect().centerx
-        self.status.rect.top = self.current_mines.rect.top
-        self.status.rect.centerx = self.restart_button.rect.centerx
+        screen_center = self.screen.get_rect().centerx#NM It is the horizontal centre of the entire screen.
+        self.status.rect.top = self.current_mines.rect.top #NM: The top of the status label is also aligned with the top of the mines label.
+        self.status.rect.centerx = self.restart_button.rect.centerx#NM: status label is now also aligned centre with the restart button
 
-        self.leaderboard.rect.top = self.MARGIN
-        self.leaderboard.rect.centerx = screen_center
+        self.leaderboard.rect.top = self.MARGIN#NM: Makes the leader board at the top of the screen.
+        self.leaderboard.rect.centerx = screen_center#NM: Makes the leaderboard centered. 
 
         self.leaderboard_hint.rect.bottom = (self.screen_rect.height
-                                             - self.MARGIN)
-        self.leaderboard_hint.rect.centerx = self.screen_rect.centerx
+                                             - self.MARGIN)#NM:Shifts the leaderboard slightly above the margin.
+        self.leaderboard_hint.rect.centerx = self.screen_rect.centerx#NM:Centres the leaderboard.
 
-        self.victory_time.rect.top = self.MARGIN
-        self.victory_time.rect.centerx = self.screen_rect.centerx
+        self.victory_time.rect.top = self.MARGIN#NM: Makes the victory text at the top of the game.
+        self.victory_time.rect.centerx = self.screen_rect.centerx#NM: Makes it centered. 
         self.leaderboard_announcement.rect.top = (
             self.victory_time.rect.bottom
-            + 0.4 * self.victory_time.rect.height)
+            + 0.4 * self.victory_time.rect.height)#NM: This codes for the part after the game where the user gets to know the time they took and it positions the text of the time. 
         self.leaderboard_announcement.rect.centerx = self.screen_rect.centerx
 
         self.name_input.rect.top = (
             self.leaderboard_announcement.rect.bottom
-            + self.leaderboard_announcement.rect.height)
+            + self.leaderboard_announcement.rect.height) #NM: This codes for the part after the player wins the round and the game asks for a name to put on the leaderboard. It centres and sets the position of the question.
         self.name_input.rect.centerx = self.screen_rect.centerx
 
     def place_hud(self):
         """Place timer and mines info and return width of this block."""
         hud_width = max(self.timer.rect.width, self.current_mines.rect.width)
         self.timer.rect.topleft = (self.hud_rect.right - hud_width,
-                                   self.hud_rect.top)
+                                   self.hud_rect.top)#NM: Codes for where the HUD (which is basically the timer and mines information) and poistions them in the rectangle. It positions it to the top right of the screen.
         self.current_mines.rect.topleft = (
             self.timer.rect.left,
             self.timer.rect.bottom + 0.4 * self.timer.rect.height)

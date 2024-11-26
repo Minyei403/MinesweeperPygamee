@@ -182,7 +182,7 @@ class Game:
         self.difficulty_selector.rect.centerx = self.gui_rect.centerx #NM: The .rect function is used to draw rectangles. In this case the selector is aligned horizontally to the centre of the GUI.
         self.difficulty_selector.rect.y = self.MARGIN
         self.difficulty_selector.callback = self.on_difficulty_change #NM: Everytime this function runs it updates teh game dimensions to match the difficulty level. 
-
+        #NM (from . gui import SelectionGroup, Input, Button, Label, InputDialogue) Input is already defined, so it doesn't ask the user for input. 
         active_input = self.difficulty_selector.selected == "CUSTOM" #NM: Checks to see if the difficulty level is custom and if its true it changes the dimensions of the game based on the input from the user.
         self.width_input = Input(gui_font, self.GUI_FONT_COLOR,
                                  "WIDTH", self.n_cols, #NM: Makes a section for width input. 
@@ -204,104 +204,99 @@ class Game:
                                  on_enter_callback=self.on_mines_enter)
 
         self.timer = Input(gui_font, self.GUI_FONT_COLOR,
-                           "TIME", self.board.time)
+                           "TIME", self.board.time) #NM: Shows the time while the user is playing the game, and determines the font and colour of the text. 
         self.current_mines = Input(gui_font, self.GUI_FONT_COLOR,
-                                   "MINES", self.board.n_mines)
+                                   "MINES", self.board.n_mines) #NM: Codes for the font and colour of the text that shows mine count. 
 
-        self.status = Label(gui_font, self.GUI_FONT_COLOR, "READY TO GO!")
+        self.status = Label(gui_font, self.GUI_FONT_COLOR, "READY TO GO!") #NM: This line also codes for the color and font of the text. 
 
         self.restart_button = Button(gui_font,
                                      self.GUI_FONT_COLOR,
                                      "RESTART",
-                                     self.board.reset)
+                                     self.board.reset)#NM: Codes for the appearance of teh reset button like the colour and font.
 
         self.show_leaderboard_button = Button(gui_font, self.GUI_FONT_COLOR,
                                               "LEADER BOARD",
-                                              self.show_leaderboard)
+                                              self.show_leaderboard)#NM: Codes for the font and color for the phrase "LEADER BOARD"
 
         leaderboard_width = (
-            self.GUI_WIDTH + 2 * self.MARGIN
-            + self.MIN_BOARD_DIMENSION_DISPLAY * self.TILE_SIZE)
+            self.GUI_WIDTH + 2 * self.MARGIN #NM: 2 * self.MARGIN takes is the spacing added to each side of the leadership board. 
+            + self.MIN_BOARD_DIMENSION_DISPLAY * self.TILE_SIZE)#NM: This code determines the width and spacing for the leaderboard. 
         self.leaderboard = Leaderboard(gui_font, self.GUI_FONT_COLOR,
-                                       5, leaderboard_width,
-                                       data=leaderboard_data)
+                                       5, leaderboard_width, #NM: 5 is the limit of playerrs allowed on the leardership board. 
+                                       data=leaderboard_data) 
         self.leaderboard_hint = Label(gui_font, self.GUI_FONT_COLOR,
-                                      "CLICK TO CONTINUE")
+                                      "CLICK TO CONTINUE")#NM: This line codes for the font and colour of the text. 
 
         self.name_input = InputDialogue(gui_font, self.GUI_FONT_COLOR,
-                                        "ENTER YOUR NAME",
+                                        "ENTER YOUR NAME",#NM: Codes for the text and  font colour. 
                                         self.on_name_enter,
                                         max_length=self.MAX_NAME_LENGTH,
-                                        key_filter=is_key_suitable_for_name)
+                                        key_filter=is_key_suitable_for_name)#NM: After the player finishes their level the game asks the user for their name but this code restricts the amount of characters the user is allowed to input. 
 
-        self.victory_time = Label(gui_font, self.GUI_FONT_COLOR, "")
+        self.victory_time = Label(gui_font, self.GUI_FONT_COLOR, "") #NM: Shows the time when the player marks all the mines correctly.
         self.leaderboard_announcement = Label(
             gui_font, self.GUI_FONT_COLOR,
             "YOU MADE IT TO THE LEADERBOARD!")
         self.show_name_input_timer = Timer(self.show_name_input)
+        #NM: The above section codes for the font and colour of the text outputs after the player wins the level. 
 
-        self.place_gui()
-        self.keep_running = None
-        self.mode = "game"
+        self.place_gui()#NM: This calls the GUI components to position and organizes it on the game. 
+        self.keep_running = None#NM: Like a placeholder before the loop starts.   
+        self.mode = "game" #NM: Assigns a string to the .mode and allows the game to keep track of everything. There is probably another mode when the mode is "game" that means you are playing minesweeper. 
 
-    def init_screen(self):
-        """Initialize screen and compute rectangles for different regions."""
+    def init_screen(self): #NM: Initialize screen and compute rectangles for different regions.
         board_area_width = \
-            max(self.n_cols, self.MIN_BOARD_DIMENSION_DISPLAY) * self.TILE_SIZE
+            max(self.n_cols, self.MIN_BOARD_DIMENSION_DISPLAY) * self.TILE_SIZE #NM: The two lines of code uses the number of coloumns to calculate the width and height of the board.
         board_area_height = \
             max(self.n_rows, self.MIN_BOARD_DIMENSION_DISPLAY) * self.TILE_SIZE
-        window_width = 3 * self.MARGIN + self.GUI_WIDTH + board_area_width
-        window_height = 3 * self.MARGIN + self.HUD_HEIGHT + board_area_height
+        window_width = 3 * self.MARGIN + self.GUI_WIDTH + board_area_width#NM: This adds space on the width sides of the screen.
+        window_height = 3 * self.MARGIN + self.HUD_HEIGHT + board_area_height#NM: This adds space on the height sides of the screen.
 
-        self.board_area_rect = pygame.Rect(2 * self.MARGIN + self.GUI_WIDTH,
-                                           2 * self.MARGIN + self.HUD_HEIGHT,
+        self.board_area_rect = pygame.Rect(2 * self.MARGIN + self.GUI_WIDTH, #NM: Determines the amount of space between the GUI and left side and makes sure the rectangle starts to the right of the GUI.
+                                           2 * self.MARGIN + self.HUD_HEIGHT, #NM: Adds spacing to the board and makes sure the rectangle starts below timer, mine count, levels, etc.
                                            board_area_width,
                                            board_area_height)
 
         self.board.rect.size = (self.n_cols * self.TILE_SIZE,
-                                self.n_rows * self.TILE_SIZE)
-        self.board.rect.center = self.board_area_rect.center
+                                self.n_rows * self.TILE_SIZE)#NM: MAkes the rectangle based on coloumns and rows. 
+        self.board.rect.center = self.board_area_rect.center#NM: Centres the rectangle
 
         self.hud_rect = pygame.Rect(2 * self.MARGIN + self.GUI_WIDTH,
                                     self.MARGIN,
                                     board_area_width,
-                                    self.HUD_HEIGHT)
+                                    self.HUD_HEIGHT) #NM: Makes the rectangle part of HUD(heads-up display command).
 
-        self.screen = pygame.display.set_mode((window_width, window_height))
-        self.screen_rect = self.screen.get_rect()
-        self.screen.fill(self.BG_COLOR)
+        self.screen = pygame.display.set_mode((window_width, window_height)) #NM: Uses the calculated dimensions from above to set the main Pygame window
+        self.screen_rect = self.screen.get_rect()#NM: This code represents the rectangle for the entire board.
+        self.screen.fill(self.BG_COLOR)#NM: makes the entire screen the background colour. 
         self.gui_rect = pygame.Rect(self.MARGIN,
                                     2 * self.MARGIN + self.HUD_HEIGHT,
                                     self.GUI_WIDTH,
-                                    board_area_height)
+                                    board_area_height)#NM: Sets the dimensions for the rectangle
 
     def set_difficulty(self, difficulty):
-        """Adjust game parameters given difficulty.
-
-        Custom difficulty is not handled in this function.
-        """
-        if difficulty == "EASY":
+        if difficulty == "EASY": #NM: determines the dimensions of the board when the level is easy.
             self.n_rows = 10
             self.n_cols = 10
             self.n_mines = 10
-        elif difficulty == "NORMAL":
+        elif difficulty == "NORMAL": #NM: determines the dimensions of the board when the level is normal.
             self.n_rows = 16
             self.n_cols = 16
             self.n_mines = 40
-        elif difficulty == "HARD":
+        elif difficulty == "HARD": #NM: determines the dimensions of the board when the level is hard.
             self.n_rows = 16
             self.n_cols = 30
             self.n_mines = 99
 
     def place_gui(self):
-        """Place GUI element according to the current settings."""
         self.width_input.rect.topleft = (
             self.gui_rect.x,
-            self.difficulty_selector.rect.bottom
-            + 0.2 * self.difficulty_selector.rect.height)
+            self.difficulty_selector.rect.bottom#NM: aligns the width_input based on the x-coordinate. 
+            + 0.2 * self.difficulty_selector.rect.height)#NM: Adds vertical space thats about 20% of the height.
         self.height_input.rect.topleft = (
             self.gui_rect.x,
-            self.width_input.rect.bottom + 0.4 * self.height_input.rect.height)
+            self.width_input.rect.bottom + 0.4 * self.height_input.rect.height)#NM: adds space thats around 40% of the height. 
         self.mines_input.rect.topleft = (
             self.gui_rect.x,
             self.height_input.rect.bottom + 0.4 * self.width_input.rect.height)

@@ -343,26 +343,24 @@ class Game:
                                    self.hud_rect.top)#NM: Codes for where the HUD (which is basically the timer and mines information) and poistions them in the rectangle. It positions it to the top right of the screen.
         self.current_mines.rect.topleft = (
             self.timer.rect.left,
-            self.timer.rect.bottom + 0.4 * self.timer.rect.height)
+            self.timer.rect.bottom + 0.4 * self.timer.rect.height)#NM: Makes the timer at th etop right corner.
         return hud_width
 
     def reset_game(self):
-        """Reset the game."""
         self.board.reset(n_rows=self.n_rows,
                          n_cols=self.n_cols,
-                         n_mines=self.n_mines)
+                         n_mines=self.n_mines)#NM: Resets the game board after the user either wins or loses the game. 
 
     def show_leaderboard(self):
         """Change screen to leaderboard."""
-        self.mode = "leaderboard"
+        self.mode = "leaderboard"#NM: Switches the mode to leaderboard to show the leaderboard.
 
     def show_name_input(self):
-        """Change screen to name input."""
-        self.mode = "name_input"
+        self.mode = "name_input" #NM: Switches mode to name input and asks the user for their name.
         self.victory_time.set_text("YOUR TIME IS {} SECONDS"
-                                   .format(self.board.time))
+                                   .format(self.board.time)) #NM: Shows the user the amount of time they spent on the game.
         self.name_input.set_value("")
-        self.place_gui()
+        self.place_gui()#NM: This line arrranges the GUI elements on the screen.
 
     def on_name_enter(self, name):
         """Handle name enter for the leaderboard."""
@@ -370,125 +368,119 @@ class Game:
             return
         self.leaderboard.update(self.difficulty_selector.selected,
                                 name,
-                                self.board.time)
-        self.mode = "leaderboard"
+                                self.board.time)#NM: If the user enters nothing the function just returns without doing anything.
+        self.mode = "leaderboard"#NM: After the user enters the name the mode switches back to leaderboard.
 
     def on_status_change(self, new_status):
-        """Handle game status change."""
-        if new_status == 'game_over':
+        if new_status == 'game_over':#NM: Shows the result if teh user loses the game and makes a mistake by clicking a mine.
             self.status.set_text("GAME OVER!")
-        elif new_status == 'victory':
+        elif new_status == 'victory':#NM: Shows the result after the user flags all the mines and wins the round. 
             self.status.set_text("VICTORY!")
             if self.leaderboard.needs_update(self.difficulty_selector.selected,
                                              self.board.time):
                 self.show_name_input_timer.start(
-                    self.DELAY_BEFORE_NAME_INPUT_MS)
-        elif new_status == 'before_start':
+                    self.DELAY_BEFORE_NAME_INPUT_MS)#NM: If the user beat the highscore it now asks the user to enter a name to go into the leaderboard.
+        elif new_status == 'before_start':#NM: The messages the user recieves before starting a game.
             self.status.set_text("READY TO GO!")
         else:
             self.status.set_text("GOOD LUCK!")
 
     def on_difficulty_change(self, difficulty):
-        """Handle difficulty change."""
         self.height_input.active_input = False
         self.width_input.active_input = False
         self.mines_input.active_input = False
-        self.set_difficulty(difficulty)
+        self.set_difficulty(difficulty)#NM: Prevents the user from inputing.
         if difficulty == "CUSTOM":
             self.height_input.active_input = True
             self.width_input.active_input = True
             self.mines_input.active_input = True
-
+            #NM: When its true it allows the user to input values. 
         self.height_input.set_value(self.n_rows)
         self.width_input.set_value(self.n_cols)
         self.mines_input.set_value(self.n_mines)
-
+        #NM: The above section sets the value for height, width, mines based on the default difficulties. 
         self.init_screen()
         self.place_gui()
-        self.reset_game()
+        self.reset_game()#NM: Updates the screen and resets the game.
 
     def set_game_parameter(self, parameter, max_value, value):
-        """Set either n_rows, n_cols, n_mines."""
         if not value:
-            value = 1
+            value = 1 #NM: If no value is given then value is set to 1.
 
         value = int(value)
-        value = min(max(1, value), max_value)
-        setattr(self, parameter, value)
-        self.n_mines = min(self.n_mines, self.n_rows * self.n_cols - 1)
-        self.mines_input.set_value(self.n_mines)
+        value = min(max(1, value), max_value)#NM: Makes sure that value is in the range of 1 and max_value. 
+        setattr(self, parameter, value)#NM: the setattr function sets the value of a attribute of the object. In this case it set the parameter to a set value.
+        self.n_mines = min(self.n_mines, self.n_rows * self.n_cols - 1)#NM: This code ensure that the number of mines is not more or all of the tiles available. It adjusts the number of mines.
+        self.mines_input.set_value(self.n_mines)#NM: Takes the input from the user and adjusts the number of mines. 
         self.init_screen()
         self.place_gui()
         self.reset_game()
+        #NM: Updates the layout of the game and restarts. 
         return value
 
     def on_rows_enter(self, value):
-        """Handle n_rows input."""
         return self.set_game_parameter('n_rows',
                                        self.max_rows,
-                                       value)
+                                       value)#NM: Calls the parameter to implement the amount of rows set by the user. 
 
     def on_cols_enter(self, value):
-        """Handle n_cols input."""
         return self.set_game_parameter('n_cols',
                                        self.max_cols,
-                                       value)
+                                       value)#NM: Calls the parameter to implement the amount of coloumns set by the user. 
 
     def on_mines_enter(self, value):
-        """Hand n_mines input."""
         return self.set_game_parameter('n_mines',
                                        self.n_rows * self.n_cols - 1,
-                                       value)
+                                       value)#NM: Calls the parameter to implement the amount of mines set by the user. 
 
     def draw_all(self):
-        """Draw all elements."""
         self.screen.fill(self.BG_COLOR)
 
         if self.mode == "leaderboard":
             self.leaderboard.draw(self.screen)
             self.leaderboard_hint.draw(self.screen)
-            pygame.display.flip()
+            pygame.display.flip()#NM: This section basically means that if the mode is in leadership mode it displays the leaderboard elements onto the game.
             return
         elif self.mode == "name_input":
             self.victory_time.draw(self.screen)
             self.leaderboard_announcement.draw(self.screen)
             self.name_input.draw(self.screen)
-            pygame.display.flip()
+            pygame.display.flip()#NM: This sections means that if the mode is in name_input then the screen is with input elements.
             return
 
-        self.board.draw(self.screen)
+        self.board.draw(self.screen) #NM: Displays the screen.
 
-        self.difficulty_selector.draw(self.screen)
-        self.height_input.draw(self.screen)
-        self.width_input.draw(self.screen)
-        self.mines_input.draw(self.screen)
+        self.difficulty_selector.draw(self.screen)#NM: Shows the difficulty options.
+        self.height_input.draw(self.screen)#NM: Shows the height input.
+        self.width_input.draw(self.screen)#NM: Shows the width input.
+        self.mines_input.draw(self.screen)#NM: Shows the mines input.
 
-        self.timer.draw(self.screen)
-        self.current_mines.draw(self.screen)
-        self.status.draw(self.screen)
+        self.timer.draw(self.screen)#NM: Shows the mines. 
+        self.current_mines.draw(self.screen)#NM: SHows the current mines.
+        self.status.draw(self.screen)#NM: Shows the status screen.
 
-        self.restart_button.draw(self.screen)
-        self.show_leaderboard_button.draw(self.screen)
+        self.restart_button.draw(self.screen)#NM: Shows the restart button.
+        self.show_leaderboard_button.draw(self.screen)#NM: Lastly shows the leaderboard.
 
-        pygame.display.flip()
-
+        pygame.display.flip() #NM: THe screen is updated to show the elements above.
+        
     def process_events(self):
-        """Process input events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.keep_running = False
-                break
+                break#NM: This section makes sure that when the user closes the window the game stops. 
 
             if self.mode == "leaderboard":
                 if event.type == pygame.MOUSEBUTTONUP:
-                    self.mode = "game"
+                    self.mode = "game"#NM: When the User is in leaderboard it allows the user to return back to the game. 
                 break
             elif self.mode == "name_input":
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:#NM: Ensures that the user is allowed to press keys for name input.
                     self.name_input.on_key_down(event)
-                break
+                break #NM: Stops the game or stops the loop.
 
             if event.type == pygame.MOUSEBUTTONUP:
+                #NM: Allows for the user to use the mouse and keyboard to navigate the game.
                 self.difficulty_selector.on_mouse_up(event.button)
                 self.height_input.on_mouse_up(event.button)
                 self.width_input.on_mouse_up(event.button)
@@ -498,41 +490,40 @@ class Game:
                 self.board.on_mouse_up(event.button)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.board.on_mouse_down(event.button)
+                #NM: The 4 lines of code below allows the user to use the keyboard and the lines of code above allows the user to use the mouse. 
             elif event.type == pygame.KEYDOWN:
                 self.height_input.on_key_down(event)
                 self.width_input.on_key_down(event)
                 self.mines_input.on_key_down(event)
 
-    def start_main_loop(self):
-        """Start main game loop."""
-        clock = pygame.time.Clock()
+    def start_main_loop(self):#NM: The main game loop.
+        clock = pygame.time.Clock()#NM: A clock is made to control the frame rate.
         self.keep_running = True
         while self.keep_running:
-            clock.tick(30)
-            self.timer.set_value(self.board.time)
-            self.current_mines.set_value(self.board.n_mines_left)
+            clock.tick(30)#NM: frame rate is 30 frames per second
+            self.timer.set_value(self.board.time)#NM: Updates the timer.
+            self.current_mines.set_value(self.board.n_mines_left)#NM: Updates the current mine count.
             self.place_hud()
             self.process_events()
             self.show_name_input_timer.check()
-            self.draw_all()
+            self.draw_all()# Displays the game elements on the screen.
 
     def save_state(self, state_file_path):
-        """Save game state on disk."""
         state = {
-            "difficulty": self.difficulty_selector.selected,
-            "n_rows": self.n_rows,
-            "n_cols": self.n_cols,
-            "n_mines": self.n_mines,
-            "leaderboard": self.leaderboard.data
+            "difficulty": self.difficulty_selector.selected, #NM: The current difficulty level.
+            "n_rows": self.n_rows,#NM: current number of rows.
+            "n_cols": self.n_cols,#NM: current number of coloumns
+            "n_mines": self.n_mines,#NM: current number of mines.
+            "leaderboard": self.leaderboard.data#NM: Current leaderboard status
         }
         with open(state_file_path, "w") as state_file:
-            json.dump(state, state_file)
+            json.dump(state, state_file)#NM: Saves the file as a json. JSON is a syntax to store and exchange data. JSON is text with javascript notation.
 
 
 def run(state_file_path):
-    pygame.init()
-    pygame.display.set_caption('Minesweeper')
-    pygame.mouse.set_visible(True)
-    game = Game(state_file_path)
-    game.start_main_loop()
-    game.save_state(state_file_path)
+    pygame.init() #NM: Starts pygame
+    pygame.display.set_caption('Minesweeper')# NM: sets the caption. 
+    pygame.mouse.set_visible(True)#NM: Allows the user to see the mouse.
+    game = Game(state_file_path)#NM: new game object is made.
+    game.start_main_loop()#NM: This line starts the main loop.
+    game.save_state(state_file_path)#NM: This line allows the game state to be saved even after the loop breaks.

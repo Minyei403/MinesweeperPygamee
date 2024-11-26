@@ -73,40 +73,40 @@ class Button(GUIElement): #BL:Creates a class for a button - a text in a frame
 
 
 class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
-    def __init__(self, font, font_color, #BL: 
+    def __init__(self, font, font_color,
                  title, options,
                  on_change_callback=None,
                  initial_value=None):
-        item_size = font.get_height()
+        item_size = font.get_height() #BL: Height of the text is ised as the size of the frame
 
         self.unselected_image = draw_frame(item_size, item_size,
-                                           font_color)
+                                           font_color) #BL: Function draws another frame with the size of the inserted picture.
         self.selected_image = draw_crossed_square_with_frame(item_size,
-                                                             font_color)
+                                                             font_color) #BL:Function creates a crossed square with a frame with the size of the picture.
 
-        self.options = options
-        self.n_options = len(options)
+        self.options = options #BL: Function calls the same options as before
+        self.n_options = len(options) #BL: Function calls the length of the option
 
-        self.title_image = font.render(title, True, font_color)
+        self.title_image = font.render(title, True, font_color) #BL: Renders the title 
         option_images = [font.render(option, True, font_color)
-                         for option in options]
+                         for option in options] #BL: Creates  a loop which goes for every string in the options and creates a surface
 
-        item_widths = [1.5 * item_size + option_image.get_width()
-                       for option_image in option_images]
-        width = max(max(item_widths), self.title_image.get_width())
+        item_widths = [1.5 * item_size + option_image.get_width() 
+                       for option_image in option_images] #BL: Calculates the total width of the items 
+        width = max(max(item_widths), self.title_image.get_width()) #BL: Calculates the maximum width
         height = (self.title_image.get_height()
                   + 0.5 * item_size
-                  + 1.5 * item_size * self.n_options)
+                  + 1.5 * item_size * self.n_options) #BL: Calculates the height of the items
 
         super(SelectionGroup, self).__init__(pygame.Surface((width, height),
                                                             pygame.SRCALPHA))
-        title_rect = self.title_image.get_rect(centerx=self.rect.centerx)
+        title_rect = self.title_image.get_rect(centerx=self.rect.centerx) #BL: Calls the parent function and positions the inage title
 
-        self.button_rects = []
+        self.button_rects = [] 
         self.item_rects = []
         option_rects = []
         y = title_rect.bottom + 0.5 * item_size
-        for option_image, item_width in zip(option_images, item_widths):
+        for option_image, item_width in zip(option_images, item_widths): #BL: Creates a loop which positions the button and the text
             button_rect = self.unselected_image.get_rect(y=y)
             option_rect = option_image.get_rect(
                 x=button_rect.right + 0.5 * button_rect.width,
@@ -117,7 +117,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
             self.item_rects.append(item_rect)
             y += 1.5 * item_size
 
-        self._selected = 0
+        self._selected = 0 """ What the heck is happening??"""
         if initial_value is not None:
             for i, option in enumerate(self.options):
                 if option == initial_value:
@@ -126,7 +126,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
 
         self.callback = on_change_callback
 
-        self.surface_stub = pygame.Surface((width, height), pygame.SRCALPHA)
+        self.surface_stub = pygame.Surface((width, height), pygame.SRCALPHA) #BL: Uses pygame to create transparent surface to display transparent pixels.
         self.surface_stub.fill((0, 0, 0, 0))
         self.surface_stub.blit(self.title_image, title_rect.topleft)
         for option_rect, option_image in zip(option_rects, option_images):
@@ -135,10 +135,9 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
 
     @property
     def selected(self):
-        """Currently selected option."""
         return self.options[self._selected]
 
-    def _render(self):
+    def _render(self): #BL: Function responsible for rendering images and text
         self.surface.fill((0, 0, 0, 0))
         self.surface.blit(self.surface_stub, (0, 0))
         for i, rect in enumerate(self.button_rects):
@@ -148,11 +147,10 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
                 self.surface.blit(self.unselected_image, rect)
 
     def on_mouse_up(self, button):
-        """Handle mouse button up."""
         if button != LEFT_CLICK:
             return
 
-        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos = pygame.mouse.get_pos()n #BL: When the button is left-clicked, function is triggered, callback function is used.
         x = mouse_pos[0] - self.rect.left
         y = mouse_pos[1] - self.rect.top
         selected_old = self._selected
@@ -168,7 +166,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
             self._render()
 
 
-class Input(GUIElement):
+class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
     """Text input.
 
     It displays a title and a value. Value can be modified by clicking on
@@ -231,7 +229,7 @@ class Input(GUIElement):
         self.value_rect = None
         self.rect = None
         self._render()
-        super(Input, self).__init__(self.surface)
+        super(Input, self).__init__(self.surface) 
 
     def _render(self):
         """Prepare data for render, called as necessary."""

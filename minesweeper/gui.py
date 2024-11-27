@@ -127,21 +127,21 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
         self.callback = on_change_callback
 
         self.surface_stub = pygame.Surface((width, height), pygame.SRCALPHA) #BL: Uses pygame to create transparent surface to display transparent pixels.
-        self.surface_stub.fill((0, 0, 0, 0))
+        self.surface_stub.fill((0, 0, 0, 0)) #BL: Calls the surface and makes it transparent
         self.surface_stub.blit(self.title_image, title_rect.topleft)
-        for option_rect, option_image in zip(option_rects, option_images):
+        for option_rect, option_image in zip(option_rects, option_images): #BL: Loop goes throught rect and lets display it.
             self.surface_stub.blit(option_image, option_rect)
         self._render()
 
-    @property
-    def selected(self):
+    @property #BL: '@' works as a decorator and grants the function special property
+    def selected(self): 
         return self.options[self._selected]
 
-    def _render(self): #BL: Function responsible for rendering images and text
-        self.surface.fill((0, 0, 0, 0))
+    def _render(self): #BL: Function is responsible for rendering of the surfaces and objects
+        self.surface.fill((0, 0, 0, 0)) 
         self.surface.blit(self.surface_stub, (0, 0))
-        for i, rect in enumerate(self.button_rects):
-            if i == self._selected:
+        for i, rect in enumerate(self.button_rects):  #BL: Loop goes through the list of button positioning
+            if i == self._selected: #BL: Loop goes through selected button
                 self.surface.blit(self.selected_image, rect)
             else:
                 self.surface.blit(self.unselected_image, rect)
@@ -151,58 +151,24 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
             return
 
         mouse_pos = pygame.mouse.get_pos()n #BL: When the button is left-clicked, function is triggered, callback function is used.
-        x = mouse_pos[0] - self.rect.left
-        y = mouse_pos[1] - self.rect.top
+        x = mouse_pos[0] - self.rect.left #BL: Calls for the position of the mouse in the rectangular(left-right)
+        y = mouse_pos[1] - self.rect.top #BL: Calls for the position fo the mouse in the rectangular (top-bottom)
         selected_old = self._selected
-        for i, (button_rect, item_rect) in enumerate(
-                zip(self.button_rects, self.item_rects)):
+        for i, (button_rect, item_rect) in enumerate( #BL: Loop goes through two lists
+                zip(self.button_rects, self.item_rects)): #BL: Combines two lists 
             if item_rect.collidepoint(x, y):
                 if self.callback is not None and i != self._selected:
                     self.callback(self.options[i])
                 self._selected = i
                 break
 
-        if self._selected != selected_old:
-            self._render()
+        if self._selected != selected_old: #BL: Compares old and new index
+            self._render() #BL:Compares two indexes between each other
 
 
-class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
-    """Text input.
-
-    It displays a title and a value. Value can be modified by clicking on
-    it (if `active_input` is True).
-
-    Parameters
-    ----------
-    font : pygame.Font
-        Font to use.
-    font_color : compatible with pygame.Color
-        Font color.
-    title : string
-        Input title.
-    value : string
-        Input value. Everything will be converted to string.
-    delimiter : string
-        Delimiter between title and value. Two spaces by default.
-    frame_color : pygame.Color compatible, optional
-        Color for frame when displaying value being edit. Use `font_color`
-        by default.
-    active_input : bool, optional
-        Whether to allow modifying value by clicking on it. False by default.
-    width : int, optional
-        Element width. If given the text be centred in a rectangle of the
-        given width. If None (default), width be equal to the current text
-        to display.
-    max_value_length : int, optional
-        Maximum length of the value string. Unlimited by default.
-    key_filter : callable, optional
-        Called like ``key_filter(key_name)`` to determine whether a symbol
-        should be accepted. No filter by default.
-    on_enter_callback : callable, optional
-        Callable to call when the value is entered. The signature is
-        ``on_enter_callback(value)``. No callback by default.
-    """
-    def __init__(self, font, font_color, title, value, delimiter="  ",
+class Input(GUIElement): #BL: Class for a text input. 
+    
+    def __init__(self, font, font_color, title, value, delimiter="  " #BL: Function calls the visual elements, makes them visibile?
                  frame_color=None, active_input=False,
                  width=None, max_value_length=None, key_filter=None,
                  on_enter_callback=None):
@@ -231,18 +197,17 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
         self._render()
         super(Input, self).__init__(self.surface) 
 
-    def _render(self):
-        """Prepare data for render, called as necessary."""
+    def _render(self): #BL: Prepares data for render if necessary
         value = self.current_value
         if self.in_input:
             value += '_'
 
-        text = self.font.render(self.title + self.delimiter + value,
+        text = self.font.render(self.title + self.delimiter + value, #BL: Prepares text for render
                                 True,
                                 self.font_color)
 
         if self.width is None:
-            width = text.get_width()
+            width = text.get_width() #BL: Calls for width, If there's no width initialized, uses the width of the text
         else:
             width = self.width
         height = text.get_height()
@@ -257,7 +222,7 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
                                  value_width + 2 * margin,
                                  value_height)
 
-        if self._active_input:
+        if self._active_input:  #BL: Creates a rectangular frame and calls for the surface
             frame = draw_frame(value_rect.width,
                                value_rect.height,
                                self.frame_color)
@@ -268,7 +233,7 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
         if self.rect is not None:
             self.rect.size = surface.get_size()
 
-    @property
+    @property #BL: Calls the active _input function
     def active_input(self):
         return self._active_input
 
@@ -278,7 +243,7 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
             self._active_input = value
             self._render()
 
-    def set_value(self, value):
+    def set_value(self, value): #BL: Calls the previous value and sets it again, then renderd it
         """Set value."""
         value = str(value)
         self.current_value = value
@@ -287,7 +252,7 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
 
     def on_mouse_up(self, button):
         """Handle mouse button up."""
-        if not self._active_input or button != LEFT_CLICK:
+        if not self._active_input or button != LEFT_CLICK: #BL: When the button is left-clicked,
             return
 
         mouse_pos = pygame.mouse.get_pos()
@@ -331,24 +296,7 @@ class Input(GUIElement): #------------- BORDERLINE FOR MONDAY
 
 
 class InputDialogue(GUIElement):
-    """Dialogue to input some value.
 
-    Parameters
-    ----------
-    font : pygame.Font
-        Font to use.
-    font_color : pygame.Color compatible
-        Color for font.
-    title : string
-        Input title.
-    on_enter_callback : callable
-        Call on enter like ``on_enter_callback(value)``.
-    max_length : int, optional
-        Maximum allowed length of the value. Unlimited by default.
-    key_filter : callable, optional
-        Called like ``key_filter(key_name)`` to determine whether a symbol
-        should be accepted. No filter by default.
-    """
     def __init__(self, font, font_color, title, on_enter_callback,
                  max_length=None, key_filter=None):
         self.font = font

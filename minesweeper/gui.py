@@ -244,22 +244,20 @@ class Input(GUIElement): #BL: Class for a text input.
             self._render()
 
     def set_value(self, value): #BL: Calls the previous value and sets it again, then renderd it
-        """Set value."""
         value = str(value)
         self.current_value = value
         self.value = self.current_value
         self._render()
 
     def on_mouse_up(self, button):
-        """Handle mouse button up."""
-        if not self._active_input or button != LEFT_CLICK: #BL: When the button is left-clicked,
+        if not self._active_input or button != LEFT_CLICK: #BL: When the button is left-clicked, an action is commited
             return
 
-        mouse_pos = pygame.mouse.get_pos()
-        x = mouse_pos[0] - self.rect.x
+        mouse_pos = pygame.mouse.get_pos() #BL: Calculates the position on the mouse on the screen
+        x = mouse_pos[0] - self.rect.x 
         y = mouse_pos[1] - self.rect.y
 
-        if self.value_rect.collidepoint(x, y):
+        if self.value_rect.collidepoint(x, y): #BL: Checks if the mouse positon is within the rectangular. Yes=true, No=false
             self.in_input = True
         else:
             self.in_input = False
@@ -267,17 +265,16 @@ class Input(GUIElement): #BL: Class for a text input.
 
         self._render()
 
-    def on_key_down(self, event):
-        """Handle key down."""
+    def on_key_down(self, event): #BL: Id self input is true, the key is handled down
         if not self.in_input:
             return
 
         key = event.key
-        if key == pygame.K_BACKSPACE:
+        if key == pygame.K_BACKSPACE: #BL: If key is held down with the backspace key, it calls for a current input value and updates it 
             if self.current_value:
                 self.current_value = self.current_value[:-1]
                 self._render()
-        elif key == pygame.K_RETURN:
+        elif key == pygame.K_RETURN: #BL: If key is held down with the return key, it calls for a current input value and updates it 
             self.in_input = False
             if self.on_enter_callback is not None:
                 new_value = str(self.on_enter_callback(self.current_value))
@@ -286,11 +283,11 @@ class Input(GUIElement): #BL: Class for a text input.
             self.set_value(new_value)
             self._render()
         else:
-            if len(self.current_value) == self.max_value_length:
+            if len(self.current_value) == self.max_value_length: #BL: If the length of the updated current value overexceeeds the maximum length, it is nor taken into account
                 return
 
             key_name = event.unicode
-            if self.key_filter is None or self.key_filter(key_name):
+            if self.key_filter is None or self.key_filter(key_name): #BL: Filter applied to a key and gets updated
                 self.current_value += key_name
                 self._render()
 

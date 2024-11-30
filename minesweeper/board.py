@@ -1,7 +1,8 @@
 #Minyei Kim - MK
 #Nina Mathew - NM
 #Barbara Litvinova - BL
-#HI guys 
+
+#wrote this in spyder
 
 from collections import deque
 import random

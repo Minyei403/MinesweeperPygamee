@@ -2,9 +2,6 @@
 #Minyei Kim - MK 
 #Barbara Litvinova - BL
 
-# HI GUYS
-#HI
-
 import os
 import json
 import pygame

@@ -507,7 +507,8 @@ class Game:
              # Check if the tile is not already open
              if self.board.tiles[r][c].is_open == False:
                  self.board.tiles[r][c].open_tile()
-                 break 
+                 break
+             #NM: The code above is the new code
              
     def start_main_loop(self):#NM: The main game loop.
         clock = pygame.time.Clock()#NM: A clock is made to control the frame rate.

@@ -4,11 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-<<<<<<< HEAD
-recent_files = ['run.py', 'minesweeper/game.py', 'minesweeper/gui.py', '../../Downloads/istemp.py', 'LAB8.py']
-=======
-recent_files = ['run.py', 'minesweeper\\game.py', 'minesweeper\\board.py']
->>>>>>> 6c4490662c3c939412c7e674fa4b2b9b90acfbd0
+recent_files = ['minesweeper\\gamenina.py', 'minesweeper\\gui.py', 'minesweeper\\board.py', 'minesweeper\\game.py', 'run.py']
 
 [main]
 version = 0.2.0

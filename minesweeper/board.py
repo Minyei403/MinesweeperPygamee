@@ -2,10 +2,10 @@
 #Nina Mathew - NM
 #Barbara Litvinova - BL
 
-from collections import deque
-import random
-import numpy
-import pygame
+from collections import deque #MK: From collections, it will import deque to access the methods.
+import random #Mk: Import random to load random module. 
+import numpy #MK: This will access the NumPy library. 
+import pygame #MK: This will access the available pygame modules. 
 
 
 LEFT_BUTTON = 1

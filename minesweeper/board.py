@@ -2,7 +2,7 @@
 #Nina Mathew - NM
 #Barbara Litvinova - BL
 
-#wrote this in spyder
+#hey I wrote this in spyder tell me if you see this 
 
 from collections import deque
 import random

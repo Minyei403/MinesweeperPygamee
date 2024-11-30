@@ -1,4 +1,6 @@
 #BL - Barbara Litvinova
+#NM - Nina MAthew
+#MK - Minyei Kim
 
 import pygame
 

@@ -173,7 +173,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
 
 class Input(GUIElement): #BL: Class for a text input. 
     
-    def __init__(self, font, font_color, title, value, delimiter="  " #BL: Function calls the visual elements, makes them visibile?
+    def __init__(self, font, font_color, title, value, delimiter="  ", #BL: Function calls the visual elements, makes them visibile?
                  frame_color=None, active_input=False,
                  width=None, max_value_length=None, key_filter=None,
                  on_enter_callback=None):

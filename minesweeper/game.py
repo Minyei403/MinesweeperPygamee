@@ -5,7 +5,7 @@
 import os
 import json
 import pygame
-import random 
+#import random 
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
 from . leaderboard import Leaderboard #
@@ -497,7 +497,7 @@ class Game:
                 self.height_input.on_key_down(event)
                 self.width_input.on_key_down(event)
                 self.mines_input.on_key_down(event)
-    def open_random_tile(self):
+    '''def open_random_tile(self):
          # Import random module if not already done
          while True:
              # Randomly pick a row and column
@@ -508,7 +508,7 @@ class Game:
              if self.board.tiles[r][c].is_open == False:
                  self.board.tiles[r][c].open_tile()
                  break
-             #NM: The code above is the new code
+             #NM: The code above is the new code'''
              
     def start_main_loop(self):#NM: The main game loop.
         clock = pygame.time.Clock()#NM: A clock is made to control the frame rate.
@@ -522,10 +522,10 @@ class Game:
             self.show_name_input_timer.check()
             self.draw_all()# Displays the game elements on the screen.
             #NM: EDITED CODE
-            current_time = pygame.time.get_ticks()
+            '''current_time = pygame.time.get_ticks()
         if current_time - self.auto_open_timer >= self.AUTO_OPEN_INTERVAL:
             self.open_random_tile()  # Open a random tile
-            self.auto_open_timer = current_time  # Reset the timer
+            self.auto_open_timer = current_time  # Reset the timer'''
 
         # Draw game elements
         self.draw_all()
@@ -543,9 +543,15 @@ class Game:
 
 
 def run(state_file_path):
+    running = True
     pygame.init() #NM: Starts pygame
     pygame.display.set_caption('Minesweeper')# NM: sets the caption. 
     pygame.mouse.set_visible(True)#NM: Allows the user to see the mouse.
     game = Game(state_file_path)#NM: new game object is made.
     game.start_main_loop()#NM: This line starts the main loop.
     game.save_state(state_file_path)#NM: This line allows the game state to be saved even after the loop breaks.
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit(0)

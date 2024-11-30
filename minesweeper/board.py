@@ -2,8 +2,6 @@
 #Nina Mathew - NM
 #Barbara Litvinova - BL
 
-#hey I wrote this in spyder tell me if you see this 
-
 from collections import deque
 import random
 import numpy

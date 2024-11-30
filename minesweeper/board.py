@@ -1,6 +1,7 @@
 #Minyei Kim - MK
 #Nina Mathew - NM
 #Barbara Litvinova - BL
+#HI guys tell me if you see this please
 
 from collections import deque
 import random

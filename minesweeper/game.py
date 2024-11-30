@@ -1,6 +1,7 @@
 #Nina Mathew - NM 
 #Minyei Kim - MK 
 #Barbara Litvinova - BL
+
 import os
 import json
 import pygame

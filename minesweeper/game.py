@@ -5,6 +5,7 @@
 import os
 import json
 import pygame
+import random 
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
 from . leaderboard import Leaderboard #
@@ -432,8 +433,8 @@ class Game:
     def on_mines_enter(self, value):
         return self.set_game_parameter('n_mines',
                                        self.n_rows * self.n_cols - 1,
-                                       value)#NM: Calls the parameter to implement the amount of mines set by the user. 
-
+                                       value)#NM: Calls the parameter to implement the amount of mines set by the user.  
+        
     def draw_all(self):
         self.screen.fill(self.BG_COLOR)
 
@@ -496,7 +497,18 @@ class Game:
                 self.height_input.on_key_down(event)
                 self.width_input.on_key_down(event)
                 self.mines_input.on_key_down(event)
-
+    def open_random_tile(self):
+         # Import random module if not already done
+         while True:
+             # Randomly pick a row and column
+             r = random.randint(0, self.n_rows - 1)
+             c = random.randint(0, self.n_cols - 1)
+             
+             # Check if the tile is not already open
+             if self.board.tiles[r][c].is_open == False:
+                 self.board.tiles[r][c].open_tile()
+                 break 
+             
     def start_main_loop(self):#NM: The main game loop.
         clock = pygame.time.Clock()#NM: A clock is made to control the frame rate.
         self.keep_running = True
@@ -508,6 +520,14 @@ class Game:
             self.process_events()
             self.show_name_input_timer.check()
             self.draw_all()# Displays the game elements on the screen.
+            #NM: EDITED CODE
+            current_time = pygame.time.get_ticks()
+        if current_time - self.auto_open_timer >= self.AUTO_OPEN_INTERVAL:
+            self.open_random_tile()  # Open a random tile
+            self.auto_open_timer = current_time  # Reset the timer
+
+        # Draw game elements
+        self.draw_all()
 
     def save_state(self, state_file_path):
         state = {

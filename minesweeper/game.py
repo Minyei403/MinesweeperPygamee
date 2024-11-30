@@ -6,6 +6,7 @@ import os
 import json
 import pygame
 #import random 
+from sys import exit
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
 from . leaderboard import Leaderboard #
@@ -554,4 +555,4 @@ def run(state_file_path):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                exit(0)
+                exit()

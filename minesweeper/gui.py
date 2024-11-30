@@ -1,14 +1,8 @@
 #BL - Barbara Litvinova
-<<<<<<< Updated upstream
 #NM - Nina MAthew
 #MK - Minyei Kim
 
-=======
-#NM - Nina Mathew
-#MK - Minyei Kim
 
-
->>>>>>> Stashed changes
 import pygame
 
 
@@ -161,7 +155,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
         if button != LEFT_CLICK:
             return
 
-        mouse_pos = pygame.mouse.get_pos()n #BL: When the button is left-clicked, function is triggered, callback function is used.
+        mouse_pos = pygame.mouse.get_pos() #BL: When the button is left-clicked, function is triggered, callback function is used.
         x = mouse_pos[0] - self.rect.left #BL: Calls for the position of the mouse in the rectangular(left-right)
         y = mouse_pos[1] - self.rect.top #BL: Calls for the position fo the mouse in the rectangular (top-bottom)
         selected_old = self._selected

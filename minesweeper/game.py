@@ -2,7 +2,7 @@
 #Minyei Kim - MK 
 #Barbara Litvinova - BL
 
-#It's here nina do you see it
+#It's here nina do you see it please work
 
 import os
 import json

@@ -1,3 +1,5 @@
+#BL - Barbara Litvinova
+
 import pygame
 
 

@@ -468,16 +468,3 @@ class Board: #MK: This is the game board.
         bg = self.bg_image.copy() #MK: It creates a copy of background image. 
         self.tiles_group.draw(bg) #MK: It draws all the tiles on copied background. 
         surface.blit(bg, self.rect) #MK: It updates the background with tiles at the location. 
-
-
-    def draw(self, surface):
-        """Draw board on surface."""
-        # In this case we need to update tiles being pressed due to the mouse
-        # hold.
-        if self.game_status in ["before_start", "running"]:
-            if pygame.mouse.get_pressed()[0]:
-                self._update_view_running()
-
-        bg = self.bg_image.copy()
-        self.tiles_group.draw(bg)
-        surface.blit(bg, self.rect)

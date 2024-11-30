@@ -292,7 +292,7 @@ class Input(GUIElement): #BL: Class for a text input.
                 self._render()
 
 
-class InputDialogue(GUIElement):
+class InputDialogue(GUIElement): #BL: A class for the design of the Dialogue Window
 
     def __init__(self, font, font_color, title, on_enter_callback,
                  max_length=None, key_filter=None):
@@ -303,7 +303,7 @@ class InputDialogue(GUIElement):
         vertical_margin = 0.5 * line_height
         horizontal_margin = font.size("_")[0]
 
-        width = self.title_image.get_width() + 2 * horizontal_margin
+        width = self.title_image.get_width() + 2 * horizontal_margin #BL: Adjusts the width b y the width of the image
         height = 3 * vertical_margin + 2 * line_height
 
         super(InputDialogue, self).__init__(draw_frame(width, height,
@@ -323,7 +323,7 @@ class InputDialogue(GUIElement):
 
         self._render()
 
-    def _render(self):
+    def _render(self): #BL: Updates the Dialogue Window for necessary changes
         width, height = self.surface.get_size()
         self.surface = draw_frame(width, height, self.font_color)
         self.surface.blit(self.title_image, self.title_image_rect)
@@ -332,13 +332,11 @@ class InputDialogue(GUIElement):
                                     centerx=0.5 * self.surface.get_width())
         self.surface.blit(value_image, rect)
 
-    def set_value(self, value):
-        """Set value."""
+    def set_value(self, value): #BL: Updates the set value
         self.value = value
         self._render()
 
-    def on_key_down(self, event):
-        """Handle key down."""
+    def on_key_down(self, event): 
         key = event.key
         if key == pygame.K_BACKSPACE:
             if self.value:

@@ -1,7 +1,14 @@
 #BL - Barbara Litvinova
+<<<<<<< Updated upstream
 #NM - Nina MAthew
 #MK - Minyei Kim
 
+=======
+#NM - Nina Mathew
+#MK - Minyei Kim
+
+
+>>>>>>> Stashed changes
 import pygame
 
 
@@ -121,7 +128,7 @@ class SelectionGroup(GUIElement): #BL: Creates a class for selection of options
             self.item_rects.append(item_rect)
             y += 1.5 * item_size
 
-        self._selected = 0 """ What the heck is happening??"""
+        self._selected = 0 
         if initial_value is not None:
             for i, option in enumerate(self.options):
                 if option == initial_value:

@@ -1,4 +1,8 @@
-import pygame
+#MK - Minyei Kim
+#NM - Nina Mathew
+#BL - Barbara Litvinova
+
+import pygame #MK: Import pygame to access pygame
 
 
 class Leaderboard:

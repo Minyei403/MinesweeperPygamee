@@ -1,7 +1,7 @@
 #Minyei Kim - MK
 #Nina Mathew - NM
 #Barbara Litvinova - BL
-#for test
+#for test(github web)
 from collections import deque
 import random
 import numpy

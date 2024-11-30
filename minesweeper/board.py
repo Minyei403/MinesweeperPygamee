@@ -1,7 +1,7 @@
 #Minyei Kim - MK
 #Nina Mathew - NM
 #Barbara Litvinova - BL
-#test(spyder)
+
 from collections import deque
 import random
 import numpy

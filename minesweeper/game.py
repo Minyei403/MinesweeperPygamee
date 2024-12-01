@@ -5,7 +5,7 @@
 import os
 import json
 import pygame
-#import random 
+import random 
 from sys import exit
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
@@ -69,11 +69,11 @@ class Timer: #NM: Starts event on timer.
 def create_count_tiles(tile_size, font_name): #NM: This function makes tiles for the amount bombs in the game. 
     colors = [
         None,
-        'Blue',
-        'Dark Green',
-        'Red',
-        'Navy',
-        'Brown',
+        'Lightblue',
+        'mediumaquamarine',
+        'White',
+        'Pink3',
+        'Aquamarine',
         'Light Sea Green',
         'Black',
         'Dim Gray'
@@ -114,9 +114,9 @@ class Game:
     GUI_WIDTH = 91
     HUD_HEIGHT = 30
     MARGIN = 20
-    BG_COLOR = pygame.Color('Light Slate Gray')#NM: This is the background colour.
-    FIELD_BG_COLOR = pygame.Color('#d7dcdc')#NM: Field background colour
-    FIELD_LINES_COLOR = pygame.Color('#738383')
+    BG_COLOR = pygame.Color('Black')#NM: This is the background colour.
+    FIELD_BG_COLOR = pygame.Color('#000000')#NM: Field background colour
+    FIELD_LINES_COLOR = pygame.Color('#f4dc7a')
     GUI_FONT_COLOR = pygame.Color('Light Yellow')#NM: The colour of the font. 
     GUI_FONT_SIZE = 13
     DIGITS = {chr(c) for c in range(ord('0'), ord('9') + 1)}
@@ -140,13 +140,13 @@ class Game:
                          - 3 * self.MARGIN) // self.TILE_SIZE
 
         difficulty = state.get('difficulty', 'EASY')#NM: The .get() function tries to get the difficulty from a different file called state.
-        if difficulty not in ['EASY', 'NORMAL', 'HARD', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
+        if difficulty not in ['EASY', 'NORMAL', 'For pandar', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
         if "leaderboard" in state: #NM It checks if leadership is in state if it's not it only displays the basic levels(Easy, Normal, Hard)
             leaderboard_data = state['leaderboard']
         else:
-            leaderboard_data = {'EASY': [], 'NORMAL': [], 'HARD': []}
+            leaderboard_data = {'EASY': [], 'NORMAL': [], 'For Pandar': []}
 
         self.n_rows = state.get('n_rows', 10)#NM: state.get gets the value of n_rows but if n_rows doesn't exist it defaults the value to 10 rows.  
         self.n_cols = state.get('n_cols', 10)#NM: As stated above if n_cols or n_mines doesn't exist the code defaults to 10.
@@ -158,7 +158,7 @@ class Game:
         tile_image = load_image('tile.png', self.TILE_SIZE)#NM: tile.png is a blank unclicked tile.
         mine_image = load_image('mine.png', self.TILE_SIZE)#NM: Mine and flag png represents the mines and flags in the game. 
         flag_image = load_image('flag.png', self.TILE_SIZE)#NM: The load image part of the file retrieves the images and resizes it to match the tile size(TILE_SIZE). 
-        gui_font = load_font("Akrobat-Bold.otf", self.GUI_FONT_SIZE)#NM: Loads the font type into the GUI of the game. GUI is the graphical user interface.
+        gui_font = load_font("Kenvector_future.ttf", self.GUI_FONT_SIZE)#NM: Loads the font type into the GUI of the game. GUI is the graphical user interface.
         #NM: The above code first tries to find the number of rows, coloumnc, and mines from the state directory but if nothing is saved in the directory then it defaults to the easiest level with 10 rows, 10 columns, and 10 mines.
 
         self.board = Board(
@@ -179,7 +179,7 @@ class Game:
             gui_font,
             self.GUI_FONT_COLOR,
             "DIFFICULTY",
-            ["EASY", "NORMAL", "HARD", "CUSTOM"],
+            ["EASY", "NORMAL", "For Pandar", "CUSTOM"],
             initial_value=state.get('difficulty', 'EASY'))
 
         self.difficulty_selector.rect.centerx = self.gui_rect.centerx #NM: The .rect function is used to draw rectangles. In this case the selector is aligned horizontally to the centre of the GUI.
@@ -287,7 +287,7 @@ class Game:
             self.n_rows = 16
             self.n_cols = 16
             self.n_mines = 40
-        elif difficulty == "HARD": #NM: determines the dimensions of the board when the level is hard.
+        elif difficulty == "For Pandar": #NM: determines the dimensions of the board when the level is hard.
             self.n_rows = 16
             self.n_cols = 30
             self.n_mines = 99
@@ -500,8 +500,8 @@ class Game:
                 self.mines_input.on_key_down(event)
     '''def open_random_tile(self):
          # Import random module if not already done
-         while True:
-             # Randomly pick a row and column
+        while True:
+              # Randomly pick a row and column
              r = random.randint(0, self.n_rows - 1)
              c = random.randint(0, self.n_cols - 1)
              
@@ -522,8 +522,9 @@ class Game:
             self.process_events()
             self.show_name_input_timer.check()
             self.draw_all()# Displays the game elements on the screen.
-            #NM: EDITED CODE
-            '''current_time = pygame.time.get_ticks()
+            '''
+           #NM: EDITED CODE
+            current_time = pygame.time.get_ticks()
         if current_time - self.auto_open_timer >= self.AUTO_OPEN_INTERVAL:
             self.open_random_tile()  # Open a random tile
             self.auto_open_timer = current_time  # Reset the timer'''

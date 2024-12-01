@@ -549,7 +549,7 @@ class Game:
 def run(state_file_path):
     running = True
     pygame.init() #NM: Starts pygame
-    pygame.display.set_caption('Minesweeper')# NM: sets the caption. 
+    pygame.display.set_caption('Uwaterloo Minesweeper')# NM: sets the caption. 
     pygame.mouse.set_visible(True)#NM: Allows the user to see the mouse.
     game = Game(state_file_path)#NM: new game object is made.
     game.start_main_loop()#NM: This line starts the main loop.

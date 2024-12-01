@@ -5,7 +5,7 @@
 import os
 import json
 import pygame
-import random 
+#import random 
 from sys import exit
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
@@ -140,13 +140,13 @@ class Game:
                          - 3 * self.MARGIN) // self.TILE_SIZE
 
         difficulty = state.get('difficulty', 'EASY')#NM: The .get() function tries to get the difficulty from a different file called state.
-        if difficulty not in ['EASY', 'NORMAL', 'For pandar', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
+        if difficulty not in ['EASY', 'NORMAL', 'Prof. Pendar', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
         if "leaderboard" in state: #NM It checks if leadership is in state if it's not it only displays the basic levels(Easy, Normal, Hard)
             leaderboard_data = state['leaderboard']
         else:
-            leaderboard_data = {'EASY': [], 'NORMAL': [], 'For Pandar': []}
+            leaderboard_data = {'EASY': [], 'NORMAL': [], 'Prof. Pendar': []}
 
         self.n_rows = state.get('n_rows', 10)#NM: state.get gets the value of n_rows but if n_rows doesn't exist it defaults the value to 10 rows.  
         self.n_cols = state.get('n_cols', 10)#NM: As stated above if n_cols or n_mines doesn't exist the code defaults to 10.
@@ -179,7 +179,7 @@ class Game:
             gui_font,
             self.GUI_FONT_COLOR,
             "DIFFICULTY",
-            ["EASY", "NORMAL", "For Pandar", "CUSTOM"],
+            ["EASY", "NORMAL", "Prof. Pendar", "CUSTOM"],
             initial_value=state.get('difficulty', 'EASY'))
 
         self.difficulty_selector.rect.centerx = self.gui_rect.centerx #NM: The .rect function is used to draw rectangles. In this case the selector is aligned horizontally to the centre of the GUI.
@@ -287,7 +287,7 @@ class Game:
             self.n_rows = 16
             self.n_cols = 16
             self.n_mines = 40
-        elif difficulty == "For Pandar": #NM: determines the dimensions of the board when the level is hard.
+        elif difficulty == "Prof. Pendar": #NM: determines the dimensions of the board when the level is hard.
             self.n_rows = 16
             self.n_cols = 30
             self.n_mines = 99
@@ -521,8 +521,10 @@ class Game:
             self.place_hud()
             self.process_events()
             self.show_name_input_timer.check()
+        #pygame.display.update()
             self.draw_all()# Displays the game elements on the screen.
-            '''
+            
+        '''
            #NM: EDITED CODE
             current_time = pygame.time.get_ticks()
         if current_time - self.auto_open_timer >= self.AUTO_OPEN_INTERVAL:

@@ -6,6 +6,7 @@ import pygame #MK: Import pygame to access pygame
 
 
 class Leaderboard:
+    
     """Store, update and display leaderboard.
 
     Parameters
@@ -46,17 +47,18 @@ class Leaderboard:
         self.title = font.render("LEADER BOARD", True, font_color)
         self.easy_title = font.render("EASY", True, font_color)
         self.normal_title = font.render("NORMAL", True, font_color)
-        self.hard_title = font.render("HARD", True, font_color)
+        self.hard_title = font.render("Prof. Pendar", True, font_color)
         self.list_start_y = (self.vertical_margin + 2 * self.text_height
                              + self.text_height + self.vertical_margin)
         #MK: It calculates the starting y coordinate for leaderboard entries. 
         if data is None: #MK: Initialize leaderboard data. 
-            self.data = {'EASY': [], 'NORMAL': [], 'HARD': []} #MK: If no data is provided, intialize empty lists for each difficulty level. 
+            self.data = {'EASY': [], 'NORMAL': [], 'Prof. Pendar': []} #MK: If no data is provided, intialize empty lists for each difficulty level. 
         else:
             self.data = data #MK: It uses the data. 
 
         self._prepare_render() #MK: Prepare to render the initial state of the leaderboard. 
-
+        pygame.init()
+        
     def _prepare_surface(self):
         """Prepare surface with all titles."""
         self.surface.fill((0, 0, 0, 0)) #MK: Fill the surface with a transparent colour to reset it. 
@@ -151,3 +153,4 @@ class Leaderboard:
     def draw(self, surface): #This is a function that draws on the surface. 
         """Draw on the surface."""
         surface.blit(self.surface, self.rect)
+        

@@ -9,7 +9,7 @@ import pygame
 from sys import exit
 from . board import Board
 from . gui import SelectionGroup, Input, Button, Label, InputDialogue
-from . leaderboard import Leaderboard #
+from . leaderboard import Leaderboard 
 #NM: above are imported files and python code for graphics and the visual part of the Mindsweeper game.  
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), 'assets')#NM: os.path is used to see and modify files and for accessing the filesystem.
@@ -140,7 +140,7 @@ class Game:
                          - 3 * self.MARGIN) // self.TILE_SIZE
 
         difficulty = state.get('difficulty', 'EASY')#NM: The .get() function tries to get the difficulty from a different file called state.
-        if difficulty not in ['EASY', 'NORMAL', 'Prof. Pendar', 'CUSTOM']:#NM: This line makes the default level Easy if state does not exist.  
+        if difficulty not in ['EASY', 'NORMAL', 'Prof. Pendar']:#NM: This line makes the default level Easy if state does not exist.  
             difficulty = 'EASY'
 
         if "leaderboard" in state: #NM It checks if leadership is in state if it's not it only displays the basic levels(Easy, Normal, Hard)
@@ -179,7 +179,7 @@ class Game:
             gui_font,
             self.GUI_FONT_COLOR,
             "DIFFICULTY",
-            ["EASY", "NORMAL", "Prof. Pendar", "CUSTOM"],
+            ["EASY", "NORMAL", "Prof. Pendar"],
             initial_value=state.get('difficulty', 'EASY'))
 
         self.difficulty_selector.rect.centerx = self.gui_rect.centerx #NM: The .rect function is used to draw rectangles. In this case the selector is aligned horizontally to the centre of the GUI.
@@ -288,9 +288,9 @@ class Game:
             self.n_cols = 16
             self.n_mines = 40
         elif difficulty == "Prof. Pendar": #NM: determines the dimensions of the board when the level is hard.
-            self.n_rows = 16
+            self.n_rows = 30
             self.n_cols = 30
-            self.n_mines = 99
+            self.n_mines = 300
 
     def place_gui(self):
         self.width_input.rect.topleft = (
@@ -549,7 +549,7 @@ class Game:
 def run(state_file_path):
     running = True
     pygame.init() #NM: Starts pygame
-    pygame.display.set_caption('Uwaterloo Minesweeper')# NM: sets the caption. 
+    pygame.display.set_caption('UWaterloo Minesweeper')# NM: sets the caption. 
     pygame.mouse.set_visible(True)#NM: Allows the user to see the mouse.
     game = Game(state_file_path)#NM: new game object is made.
     game.start_main_loop()#NM: This line starts the main loop.
@@ -559,3 +559,4 @@ def run(state_file_path):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
